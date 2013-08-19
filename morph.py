@@ -184,11 +184,11 @@ def main():
 	
 	print "total number of frames to be generated: "+str(int(r*(totalLength/v)))
 	
-	xSpline = PiecewisePolynomial(times, xVals)
-	ySpline = PiecewisePolynomial(times, yVals)
-	zSpline = PiecewisePolynomial(times, zVals)
-	pitchSpline = PiecewisePolynomial(times, pitchVals)
-	yawSpline = PiecewisePolynomial(times, yawVals)
+	xSpline = UnivariateSpline(times, xVals)
+	ySpline = UnivariateSpline(times, yVals)
+	zSpline = UnivariateSpline(times, zVals)
+	pitchSpline = UnivariateSpline(times, pitchVals)
+	yawSpline = UnivariateSpline(times, yawVals
 	
 	
 	localCVFs = []
