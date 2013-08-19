@@ -188,7 +188,7 @@ def main():
 	ySpline = UnivariateSpline(times, yVals)
 	zSpline = UnivariateSpline(times, zVals)
 	pitchSpline = UnivariateSpline(times, pitchVals)
-	yawSpline = UnivariateSpline(times, yawVals
+	yawSpline = UnivariateSpline(times, yawVals)
 	
 	
 	localCVFs = []
