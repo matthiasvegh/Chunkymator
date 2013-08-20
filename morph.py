@@ -108,6 +108,13 @@ class cvf:
 			string = str(bytearray(self.byteList[165 : 173]))
 			self.yaw = struct.unpack('!d', string)[0]
 
+			
+def normalize(list, ammount=180):
+	for i in range(len(list)-1):
+		if(list[i+1] - list[i] > ammount):
+			list[i+1] -= 2*ammount
+		elif(list[i+1] - list[i] < -ammount):
+			list[i+1] += 2*ammount
 
 def main():
 	print "done loading"
@@ -183,6 +190,12 @@ def main():
 	print "length of requested route: "+str(totalLength)+"m"
 	
 	print "total number of frames to be generated: "+str(int(r*(totalLength/v)))
+	
+	# Handle camera modularities here
+	# if distance between values is >180deg, shift camera value up/down 360
+	normalize(pitchVals)
+	normalize(yawVals)	
+	
 	
 	xSpline = UnivariateSpline(times, xVals)
 	ySpline = UnivariateSpline(times, yVals)
