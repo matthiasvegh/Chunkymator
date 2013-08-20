@@ -121,8 +121,8 @@ def main():
 	num = int(raw_input("How many files to interpolate?"))
 	cvfList = []
 	i = 0
-	if num < 1:
-		print "No interpolation for you then!"
+	if num < 4:
+		print "This script requires at least 4 input cvfs to generate a route between them."
 		return 
 	
 	while i<num:
