@@ -39,26 +39,26 @@ class cvf:
 
 	def setX(self, fl):
 		self.x = fl
-	        self.inputJson['camera']['position']['x'] = fl
-        def setY(self, fl):
+		self.inputJson['camera']['position']['x'] = fl
+	def setY(self, fl):
 		self.y = fl
-                self.inputJson['camera']['position']['y'] = fl
+		self.inputJson['camera']['position']['y'] = fl
 	def setZ(self, fl):
 		self.z = fl
-                self.inputJson['camera']['position']['z'] = fl
+		self.inputJson['camera']['position']['z'] = fl
 	def setYaw(self, flr):
 		fl = deg2rad(flr)
-                self.inputJson['camera']['orientation']['yaw'] = fl
+		self.inputJson['camera']['orientation']['yaw'] = fl
 	def setPitch(self, flr):
 		fl = deg2rad(flr)
-                self.inputJson['camera']['orientation']['pitch'] = fl
+		self.inputJson['camera']['orientation']['pitch'] = fl
 
 	def setName(self, f):
 		self.filename = f
-                self.inputJson['name'] = f
+		self.inputJson['name'] = f
 	def saveToFile(self, filename):
-                with open(filename, 'w') as f:
-                        json.dump(self.inputJson, f)
+		with open(filename, 'w') as f:
+			json.dump(self.inputJson, f)
 
 
 	filename = ""
@@ -67,7 +67,8 @@ class cvf:
 	z = 0.0
 	pitch = 0.0
 	yaw = 0.0
-        inputJson = {}
+	inputJson = {}
+
 	def __init__(self, name):
 		self.filename = name
 		self.x = 0.0
@@ -78,13 +79,13 @@ class cvf:
 
 		inputJsonString = open(name).read()
 
-                self.inputJson = json.loads(inputJsonString)
+		self.inputJson = json.loads(inputJsonString)
 
-                self.x = self.inputJson['camera']['position']['x']
-                self.y = self.inputJson['camera']['position']['y']
-                self.z = self.inputJson['camera']['position']['z']
-                self.pitch = self.inputJson['camera']['orientation']['pitch']
-                self.yaw = self.inputJson['camera']['orientation']['yaw']
+		self.x = self.inputJson['camera']['position']['x']
+		self.y = self.inputJson['camera']['position']['y']
+		self.z = self.inputJson['camera']['position']['z']
+		self.pitch = self.inputJson['camera']['orientation']['pitch']
+		self.yaw = self.inputJson['camera']['orientation']['yaw']
 
 
 def normalize(list, ammount=180):
@@ -186,6 +187,7 @@ def main():
 
 
 	for i in range(int(times[-1])):
+
 		x = xSpline(i)
 		y = ySpline(i)
 		z = zSpline(i)
@@ -199,11 +201,11 @@ def main():
 		c.setYaw(yaw)
 
 		print (str(i)+": "
-		       	"X: "+str(c.getX())+
-		       	" Y: "+str(c.getY())+
-		       	" Z: "+str(c.getZ())+
-		       	" Pitch: "+str(c.getPitch())+
-		       	" Yaw: "+str(c.getYaw()) )
+				"X: "+str(c.getX())+
+				" Y: "+str(c.getY())+
+				" Z: "+str(c.getZ())+
+				" Pitch: "+str(c.getPitch())+
+				" Yaw: "+str(c.getYaw()) )
 		localCVFs.append(c)
 
 
@@ -217,3 +219,4 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
