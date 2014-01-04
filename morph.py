@@ -5,6 +5,8 @@ print "loading dependancies..."
 import struct
 import os
 import copy
+import json
+
 
 from scipy.interpolate import UnivariateSpline
 from math import sin, cos, tan, asin, acos, atan2
@@ -15,7 +17,7 @@ def rad2deg(theta):
 	if theta < 0.0:
 		return rad2deg(theta+2*3.14159265358)
 	return theta * 180/3.14159265358
-	
+
 def deg2rad(theta):
 	if theta > 360.0:
 		return deg2rad(theta-360)
@@ -34,81 +36,57 @@ class cvf:
 		return rad2deg(self.pitch)
 	def getYaw(self):
 		return rad2deg(self.yaw)
-	
+
 	def setX(self, fl):
 		self.x = fl
-		output = struct.pack('!d', fl)
-		start = 111
-		for i in range(len(output)):
-			self.byteList[start+i] = output[i]
-	def setY(self, fl):
+	        self.inputJson['camera']['position']['x'] = fl
+        def setY(self, fl):
 		self.y = fl
-		output = struct.pack('!d', fl)
-		start = 123
-		for i in range(len(output)):
-			self.byteList[start+i] = output[i]
+                self.inputJson['camera']['position']['y'] = fl
 	def setZ(self, fl):
 		self.z = fl
-		output = struct.pack('!d', fl)
-		start = 135
-		for i in range(len(output)):
-			self.byteList[start+i] = output[i]
+                self.inputJson['camera']['position']['z'] = fl
 	def setYaw(self, flr):
 		fl = deg2rad(flr)
-		self.yaw= fl
-		output = struct.pack('!d', fl)
-		start = 151
-		for i in range(len(output)):
-			self.byteList[start+i] = output[i]
+                self.inputJson['camera']['orientation']['yaw'] = fl
 	def setPitch(self, flr):
 		fl = deg2rad(flr)
-		self.pitch = fl
-		output = struct.pack('!d', fl)
-		start = 165
-		for i in range(len(output)):
-			self.byteList[start+i] = output[i]
-	
+                self.inputJson['camera']['orientation']['pitch'] = fl
+
 	def setName(self, f):
 		self.filename = f
+                self.inputJson['name'] = f
 	def saveToFile(self, filename):
-		with open(self.filename, 'wb') as f:
-			for b in self.byteList:
-				f.write(b)
-	
+                with open(filename, 'w') as f:
+                        json.dump(self.inputJson, f)
+
+
 	filename = ""
 	x = 0.0
 	y = 0.0
 	z = 0.0
 	pitch = 0.0
 	yaw = 0.0
-	byteList = []
+        inputJson = {}
 	def __init__(self, name):
 		self.filename = name
 		self.x = 0.0
 		self.y = 0.0
 		self.z = 0.0
 		self.pitch = 0.0
-		self.pitch = 0.0
-		self.byteList = []
+		self.yaw = 0.0
 
-		with open(self.filename, "rb") as f:
-			byte = f.read(1)
-			while byte != "":
-				self.byteList.append(byte)
-				byte = f.read(1)
-			
-			string = str(bytearray(self.byteList[111 : 119]))
-			self.x = struct.unpack('!d', string)[0]
-			string = str(bytearray(self.byteList[123 : 131]))
-			self.y = struct.unpack('!d', string)[0]
-			string = str(bytearray(self.byteList[135 : 143]))
-			self.z = struct.unpack('!d', string)[0]
-			string = str(bytearray(self.byteList[151 : 159]))
-			self.pitch = struct.unpack('!d', string)[0]
-			string = str(bytearray(self.byteList[165 : 173]))
-			self.yaw = struct.unpack('!d', string)[0]
+		inputJsonString = open(name).read()
 
-			
+                self.inputJson = json.loads(inputJsonString)
+
+                self.x = self.inputJson['camera']['position']['x']
+                self.y = self.inputJson['camera']['position']['y']
+                self.z = self.inputJson['camera']['position']['z']
+                self.pitch = self.inputJson['camera']['orientation']['pitch']
+                self.yaw = self.inputJson['camera']['orientation']['yaw']
+
+
 def normalize(list, ammount=180):
 	for i in range(len(list)-1):
 		if(list[i+1] - list[i] > ammount):
@@ -122,36 +100,36 @@ def main():
 	cvfList = []
 	i = 0
 	if num < 4:
-		print "This script requires at least 4 input cvfs to generate a route between them."
-		return 
-	
+		print "This script requires at least 4 input jsons to generate a route between them."
+		return
+
 	while i<num:
 		try:
-			filename = raw_input("Please enter filename for cvf #"+str(i+1)+" ")
+			filename = raw_input("Please enter filename for json #"+str(i+1)+" ")
 			c = cvf(filename)
 			cvfList.append(c)
 			print ("X: "+str(c.getX())+
-					" Y: "+str(c.getY())+
-					" Z: "+str(c.getZ())+
-					" Pitch: "+str(c.getPitch())+
-					" Yaw: "+str(c.getYaw()) )
-			
+				" Y: "+str(c.getY())+
+				" Z: "+str(c.getZ())+
+				" Pitch: "+str(c.getPitch())+
+				" Yaw: "+str(c.getYaw()) )
+
 			i += 1
 		except EnvironmentError as err:
 			print "could not get file #"+str(i+1)+" please try again!"
 			pass
 	print "done loading "+str(num)+" files."
-	outputDir = raw_input("Where shall we place output .cvfs?")
+	outputDir = raw_input("Where shall we place output .jsons?")
 
 	######################## input got, start actual work here.
-	
+
 	totalLength = 0.0
-	
+
 	#############################
 	v=5.4		#Flying Speed	#
 	r=25		#Frame Rate		#
 	#############################
-	
+
 	times = []
 	times.append(0)
 	xVals = [cvfList[0].getX()]
@@ -159,7 +137,7 @@ def main():
 	zVals = [cvfList[0].getZ()]
 	pitchVals = [cvfList[0].getPitch()]
 	yawVals = [cvfList[0].getYaw()]
-	
+
 	for i in range(num-1):
 		# calculate euclidean distance between (i)->(i+1)
 		nextFrame = (i+1)%num
@@ -169,44 +147,44 @@ def main():
 		dy = cvfList[nextFrame].getY() - cvfList[lastFrame].getY()
 		dz = cvfList[nextFrame].getZ() - cvfList[lastFrame].getZ()
 		length = ((dx*dx+dy*dy+dz*dz)**.5)
-		
+
 		totalLength += length
 		times.append( r*(totalLength/v) )
-		
+
 		x = cvfList[nextFrame].getX()
 		y = cvfList[nextFrame].getY()
 		z = cvfList[nextFrame].getZ()
 		pitch = cvfList[nextFrame].getPitch()
 		yaw = cvfList[nextFrame].getYaw()
-	
+
 		xVals.append(x)
 		yVals.append(y)
 		zVals.append(z)
 		pitchVals.append(pitch)
 		yawVals.append(yaw)
-		
-		
-	
+
+
+
 	print "length of requested route: "+str(totalLength)+"m"
-	
+
 	print "total number of frames to be generated: "+str(int(r*(totalLength/v)))
-	
+
 	# Handle camera modularities here
 	# if distance between values is >180deg, shift camera value up/down 360
 	normalize(pitchVals)
-	normalize(yawVals)	
-	
-	
+	normalize(yawVals)
+
+
 	xSpline = UnivariateSpline(times, xVals)
 	ySpline = UnivariateSpline(times, yVals)
 	zSpline = UnivariateSpline(times, zVals)
 	pitchSpline = UnivariateSpline(times, pitchVals)
 	yawSpline = UnivariateSpline(times, yawVals)
-	
-	
+
+
 	localCVFs = []
-	
-	
+
+
 	for i in range(int(times[-1])):
 		x = xSpline(i)
 		y = ySpline(i)
@@ -219,23 +197,23 @@ def main():
 		c.setZ(z)
 		c.setPitch(pitch)
 		c.setYaw(yaw)
-		
-		print (		str(i)+": "
-					"X: "+str(c.getX())+
-					" Y: "+str(c.getY())+
-					" Z: "+str(c.getZ())+
-					" Pitch: "+str(c.getPitch())+
-					" Yaw: "+str(c.getYaw()) )
+
+		print (str(i)+": "
+		       	"X: "+str(c.getX())+
+		       	" Y: "+str(c.getY())+
+		       	" Z: "+str(c.getZ())+
+		       	" Pitch: "+str(c.getPitch())+
+		       	" Yaw: "+str(c.getYaw()) )
 		localCVFs.append(c)
-	
-	
+
+
 	for i in range(len(localCVFs)):
 		c = localCVFs[i]
-		name = os.path.join(outputDir, "interpolated-"+str(i)+".cvf")
-		c.setName(name)
+		name = os.path.join(outputDir, "interpolated-"+str(i)+".json")
+		c.setName("interpolated-"+str(i))
 		c.saveToFile(name);
-		
-	
+
+
 
 if __name__ == "__main__":
 	main()
