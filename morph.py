@@ -57,7 +57,7 @@ class cvf:
 		self.filename = f
 		self.inputJson['name'] = f
 	def saveToFile(self, filename):
-		with open(filename, 'w') as f:
+		with open(filename, 'w+') as f:
 			json.dump(self.inputJson, f)
 
 
@@ -104,9 +104,18 @@ def main():
 		print "This script requires at least 4 input jsons to generate a route between them."
 		return
 
+	baseFilename = raw_input("Filenamebase? If empty, will prompt for all files.")
+
+
 	while i<num:
 		try:
-			filename = raw_input("Please enter filename for json #"+str(i+1)+" ")
+			if baseFilename != "":
+				filename = baseFilename+str(i)+".json"
+				print "loading ",filename
+			else:
+				filename = raw_input("Please enter filename for json #"+str(i+1)+" ")
+
+
 			c = cvf(filename)
 			cvfList.append(c)
 			print ("X: "+str(c.getX())+
