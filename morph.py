@@ -8,7 +8,7 @@ import copy
 from cvf import *
 
 from scipy.interpolate import UnivariateSpline
-from math import sin, cos, tan, asin, acos, atan2
+from math import sin, cos, tan, asin, acos, atan2, sqrt, pi
 
 def normalize(list, ammount=180):
     for i in range(len(list)-1):
@@ -16,6 +16,37 @@ def normalize(list, ammount=180):
             list[i+1] -= 2*ammount
         elif(list[i+1] - list[i] < -ammount):
             list[i+1] += 2*ammount
+
+def getCameraAngles(xSpline, ySpline, zSpline, times):
+
+    yawVals = []
+    pitchVals = []
+    for frame in range(int(times[-1])):
+        currentXVal = xSpline(frame)
+        currentYVal = ySpline(frame)
+        currentZVal = zSpline(frame)
+
+        nextXVal = xSpline(frame+1)
+        nextYVal = ySpline(frame+1)
+        nextZVal = zSpline(frame+1)
+
+        dx = nextXVal - currentXVal
+        dy = nextYVal - currentYVal
+        dz = nextZVal - currentZVal
+
+        pitch = atan2(dz, dx)
+        yaw = atan2(sqrt(dz*dz + dx*dx), dy) + pi
+
+        yawVals.append(rad2deg(yaw))
+        pitchVals.append(rad2deg(pitch))
+        print rad2deg(yaw), rad2deg(pitch)
+
+    yawVals.append(yawVals[-1])
+    pitchVals.append(pitchVals[-1])
+    # duplicate last values
+
+    return yawVals, pitchVals
+
 
 def main():
     print "done loading"
@@ -67,8 +98,6 @@ def main():
     xVals = [cvfList[0].getX()]
     yVals = [cvfList[0].getY()]
     zVals = [cvfList[0].getZ()]
-    pitchVals = [cvfList[0].getPitch()]
-    yawVals = [cvfList[0].getYaw()]
 
     for i in range(num-1):
         # calculate euclidean distance between (i)->(i+1)
@@ -86,14 +115,10 @@ def main():
         x = cvfList[nextFrame].getX()
         y = cvfList[nextFrame].getY()
         z = cvfList[nextFrame].getZ()
-        pitch = cvfList[nextFrame].getPitch()
-        yaw = cvfList[nextFrame].getYaw()
 
         xVals.append(x)
         yVals.append(y)
         zVals.append(z)
-        pitchVals.append(pitch)
-        yawVals.append(yaw)
 
 
 
@@ -101,18 +126,11 @@ def main():
 
     print "total number of frames to be generated: "+str(int(r*(totalLength/v)))
 
-    # Handle camera modularities here
-    # if distance between values is >180deg, shift camera value up/down 360
-    normalize(pitchVals)
-    normalize(yawVals)
-
-
     xSpline = UnivariateSpline(times, xVals)
     ySpline = UnivariateSpline(times, yVals)
     zSpline = UnivariateSpline(times, zVals)
-    pitchSpline = UnivariateSpline(times, pitchVals)
-    yawSpline = UnivariateSpline(times, yawVals)
 
+    yawPath, pitchPath = getCameraAngles(xSpline, ySpline, zSpline, times)
 
     localCVFs = []
 
@@ -122,8 +140,10 @@ def main():
         x = xSpline(i)
         y = ySpline(i)
         z = zSpline(i)
-        pitch = yawSpline(i)
-        yaw = pitchSpline(i)
+        pitch = pitchPath[i]
+        yaw = yawPath[i]
+
+
         c=copy.deepcopy(cvfList[-1])
         c.setX(x)
         c.setY(y)

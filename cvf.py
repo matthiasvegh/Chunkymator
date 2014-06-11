@@ -46,9 +46,11 @@ class cvf:
     def setYaw(self, flr):
         fl = deg2rad(flr)
         self.inputJson['camera']['orientation']['yaw'] = fl
+        self.yaw = fl
     def setPitch(self, flr):
         fl = deg2rad(flr)
         self.inputJson['camera']['orientation']['pitch'] = fl
+        self.pitch = fl
     def setSunAltitude(self, fl):
         self.sun_altitude = fl
         self.inputJson['sun']['altitude'] = fl
