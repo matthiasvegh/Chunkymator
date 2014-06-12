@@ -1,6 +1,8 @@
 *.py[cod]
 outputs
 
+*.swp
+
 # C extensions
 *.so
 
