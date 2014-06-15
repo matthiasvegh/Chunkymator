@@ -34,8 +34,8 @@ def getCameraAngles(xSpline, ySpline, zSpline, times):
         dy = nextYVal - currentYVal
         dz = nextZVal - currentZVal
 
-        pitch = atan2(dz, dx)
-        yaw = atan2(sqrt(dz*dz + dx*dx), dy) + pi
+        yaw = atan2(dz, dx)
+        pitch = atan2(sqrt(dz*dz + dx*dx), dy) + pi
 
         yawVals.append(rad2deg(yaw))
         pitchVals.append(rad2deg(pitch))
