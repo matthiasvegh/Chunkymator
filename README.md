@@ -1,7 +1,7 @@
 Chunkymator
 ===========
 
-A CVF generator for Chunky
+A json generator for Chunky
 
 Requirements: python 2.x, numpy, scipy, and a batch of jsons from Chunky.
 
