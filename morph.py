@@ -3,6 +3,7 @@
 print "CVF Generator for chunky."
 print "loading dependancies..."
 import struct
+import readline
 import os
 import copy
 from cvf import *
@@ -34,7 +35,7 @@ def getCameraAngles(xSpline, ySpline, zSpline, times):
         dy = nextYVal - currentYVal
         dz = nextZVal - currentZVal
 
-        yaw = atan2(dz, dx)
+        yaw = atan2(dx, dz) + pi/2
         pitch = atan2(sqrt(dz*dz + dx*dx), dy) + pi
 
         yawVals.append(rad2deg(yaw))
@@ -56,6 +57,8 @@ def main():
     if num < 4:
         print "This script requires at least 4 input jsons to generate a route between them."
         return
+
+    readline.parse_and_bind("tab: complete") # this enables raw_input tab completion for files
 
     baseFilename = raw_input("Filenamebase? If empty, will prompt for all files.")
 
