@@ -40,7 +40,6 @@ def getCameraAngles(xSpline, ySpline, zSpline, times):
 
         yawVals.append(rad2deg(yaw))
         pitchVals.append(rad2deg(pitch))
-        print rad2deg(yaw), rad2deg(pitch)
 
     yawVals.append(yawVals[-1])
     pitchVals.append(pitchVals[-1])
@@ -121,7 +120,7 @@ def main():
         y = cvfList[nextFrame].getY()
         z = cvfList[nextFrame].getZ()
         sunAltitude = cvfList[nextFrame].getSunAltitude()
-        sunAzimuth = cvfList[nextFrame].getSunAltitude()
+        sunAzimuth = cvfList[nextFrame].getSunAzimuth()
 
         xVals.append(x)
         yVals.append(y)
@@ -154,7 +153,7 @@ def main():
         pitch = pitchPath[i]
         yaw = yawPath[i]
         sunAltitude = sunAltitudeSpline(i)
-        sunAzimuth = sunAltitudeSpline(i)
+        sunAzimuth = sunAzimuthSpline(i)
 
 
         c=copy.deepcopy(cvfList[-1])
