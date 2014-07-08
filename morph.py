@@ -101,6 +101,8 @@ def main():
     xVals = [cvfList[0].getX()]
     yVals = [cvfList[0].getY()]
     zVals = [cvfList[0].getZ()]
+    sunAltitudeVals = [cvfList[0].getSunAltitude()]
+    sunAzimuthVals = [cvfList[0].getSunAzimuth()]
 
     for i in range(num-1):
         # calculate euclidean distance between (i)->(i+1)
@@ -118,10 +120,14 @@ def main():
         x = cvfList[nextFrame].getX()
         y = cvfList[nextFrame].getY()
         z = cvfList[nextFrame].getZ()
+        sunAltitude = cvfList[nextFrame].getSunAltitude()
+        sunAzimuth = cvfList[nextFrame].getSunAltitude()
 
         xVals.append(x)
         yVals.append(y)
         zVals.append(z)
+        sunAltitudeVals.append(sunAltitude)
+        sunAzimuthVals.append(sunAzimuth)
 
 
 
@@ -132,6 +138,8 @@ def main():
     xSpline = UnivariateSpline(times, xVals)
     ySpline = UnivariateSpline(times, yVals)
     zSpline = UnivariateSpline(times, zVals)
+    sunAltitudeSpline = UnivariateSpline(times, sunAltitudeVals)
+    sunAzimuthSpline = UnivariateSpline(times, sunAzimuthVals)
 
     yawPath, pitchPath = getCameraAngles(xSpline, ySpline, zSpline, times)
 
@@ -145,6 +153,8 @@ def main():
         z = zSpline(i)
         pitch = pitchPath[i]
         yaw = yawPath[i]
+        sunAltitude = sunAltitudeSpline(i)
+        sunAzimuth = sunAltitudeSpline(i)
 
 
         c=copy.deepcopy(cvfList[-1])
@@ -153,6 +163,8 @@ def main():
         c.setZ(z)
         c.setPitch(pitch)
         c.setYaw(yaw)
+        c.setSunAltitude(sunAltitude)
+        c.setSunAzimuth(sunAzimuth)
 
         print (str(i)+": "
                 "X: "+str(c.getX())+
