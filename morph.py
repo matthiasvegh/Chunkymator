@@ -171,7 +171,9 @@ def main():
                 " Y: "+str(c.getY())+
                 " Z: "+str(c.getZ())+
                 " Pitch: "+str(c.getPitch())+
-                " Yaw: "+str(c.getYaw()) )
+                " Yaw: "+str(c.getYaw())+
+                " Sun Altitude: "+str(c.getSunAltitude())+
+                " Sun Azimuth: "+str(c.getSunAzimuth()))
         localCVFs.append(c)
 
 
