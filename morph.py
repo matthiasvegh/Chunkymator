@@ -6,6 +6,7 @@ import struct
 import readline
 import os
 import copy
+import optparse
 from cvf import *
 
 from scipy.interpolate import UnivariateSpline
@@ -50,27 +51,28 @@ def getCameraAngles(xSpline, ySpline, zSpline, times):
 
 
 def main():
+    parser = optparse.OptionParser(
+            usage="%prog [options] scene1 scene2 scene3 scene4 ...",
+            description="Chunkymator scene interpolator.")
+    parser.add_option("-o", "--outputdir", dest="outputdir",
+            help="Directory to place interpoalted scenes to.",
+            metavar="DIR")
     print "done loading"
-    num = int(raw_input("How many files to interpolate?"))
+    (options, scenes) = parser.parse_args()
+
+    num = len(scenes)
+
     cvfList = []
     i = 0
     if num < 4:
         print "This script requires at least 4 input jsons to generate a route between them."
         return
 
-    readline.parse_and_bind("tab: complete") # this enables raw_input tab completion for files
-
-    baseFilename = raw_input("Filenamebase? If empty, will prompt for all files.")
-
 
     while i<num:
         try:
-            if baseFilename != "":
-                filename = baseFilename+str(i+1).zfill(3)+".json"
-                print "loading ",filename
-            else:
-                filename = raw_input("Please enter filename for json #"+str(i+1)+" ")
-
+            filename = scenes[i]
+            print "loading ",filename
 
             c = cvf(filename)
             cvfList.append(c)
@@ -83,9 +85,11 @@ def main():
             i += 1
         except EnvironmentError as err:
             print "could not get file #"+str(i+1)+" please try again!"
-            pass
+            return
     print "done loading "+str(num)+" files."
-    outputDir = raw_input("Where shall we place output .jsons?")
+    outputDir = options.outputdir
+    if outputDir is None:
+        outputDir = './outputs'
 
     ######################## input got, start actual work here.
 
