@@ -57,6 +57,12 @@ def main():
     parser.add_option("-o", "--outputdir", dest="outputdir",
             help="Directory to place interpoalted scenes to.",
             metavar="DIR")
+    parser.add_option("-f", "--frame-rate", dest="frameRate",
+            help="What frame rate you intend to play back the interpolatd images.",
+            metavar="NUM")
+    parser.add_option("-s", "--traveling-speed", dest="flyingSpeed",
+            help="What speed the camera should be traveling.",
+            metavar="NUM")
     print "done loading"
     (options, scenes) = parser.parse_args()
 
@@ -96,8 +102,12 @@ def main():
     totalLength = 0.0
 
     #############################
-    v=5.4       #Flying Speed   #
-    r=25        #Frame Rate         #
+    v = options.flyingSpeed
+    if v is None:
+        v = 5.4
+    r = options.frameRate
+    if r is None:
+        r = 25
     #############################
 
     times = []
