@@ -21,19 +21,19 @@ class MockSpline:
 	def __call__(self, index):
 		return self.list[index]
 
-class CameraAnglesTest(unittest.TestCase):
+class StraightLineCameraAnglesTest(unittest.TestCase):
 
 	def setUp(self):
-		pass
+		self.increasingSpline = MockSpline(1, 2, 3, 4)
+		self.sameSpline = MockSpline(0, 0, 0, 0)
+		self.times = [0, 1, 2, 3]
 
-	def test_camera_angles_on_a_straight_line_should_look_forward(self):
-		xSpline = MockSpline(1, 2, 3, 4)
-		ySpline = MockSpline(0, 0, 0, 0)
-		zSpline = MockSpline(0, 0, 0, 0)
-
-		result = morph.getCameraAngles(xSpline, ySpline, zSpline, [0, 1, 2, 3])
-
-		(yaws, pitches) = result
+	def test_camera_angles_on_increasing_x_should_look_forward(self):
+		(yaws, pitches) = morph.getCameraAngles(
+				self.increasingSpline,
+				self.sameSpline,
+				self.sameSpline,
+				self.times)
 
 		self.assertEqual(len(yaws), 4)
 		self.assertEqual(len(pitches), 4)
@@ -43,6 +43,23 @@ class CameraAnglesTest(unittest.TestCase):
 
 		for pitch in pitches:
 			self.assertAlmostEqual(pitch, 270)
+
+	def test_camera_angles_on_increasing_y_should_look_forward(self):
+		(yaws, pitches) = morph.getCameraAngles(
+				self.sameSpline,
+				self.increasingSpline,
+				self.sameSpline,
+				self.times)
+
+		self.assertEqual(len(yaws), 4)
+		self.assertEqual(len(pitches), 4)
+
+		for yaw in yaws:
+			self.assertAlmostEqual(yaw, 90)
+
+		for pitch in pitches:
+			self.assertAlmostEqual(pitch, 180)
+
 
 if __name__ == "__main__":
     unittest.main()
