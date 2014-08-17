@@ -1,4 +1,4 @@
-Chunkymator
+Chunkymator [![Build Status](https://travis-ci.org/matthiasvegh/Chunkymator.png?branch=master)](https://travis-ci.org/matthiasvegh/Chunkymator)
 ===========
 
 A json generator for Chunky
