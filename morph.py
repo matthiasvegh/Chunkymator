@@ -59,11 +59,11 @@ def main():
             help="Directory to place interpoalted scenes to.",
             metavar="DIR")
     parser.add_option("-f", "--frame-rate", dest="frameRate",
-            help="What frame rate you intend to play back the interpolated images.",
-            metavar="NUM", type=float)
+            help="What frame rate you intend to play back thetae interpolated images (default: %default fps).",
+            metavar="NUM", default=25, type=float)
     parser.add_option("-s", "--traveling-speed", dest="flyingSpeed",
-            help="What speed the camera should be traveling.",
-            metavar="NUM", type=float)
+            help="What speed the camera should be traveling (default: %default m/s).",
+            metavar="NUM", default=5.4, type=float)
     cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
             "If you specify these, the camera will always point in the direction of "
             "these coordinates, if you do not specify them, the camera shall always "
@@ -125,11 +125,7 @@ def main():
 
     #############################
     v = options.flyingSpeed
-    if v is None:
-        v = 5.4
     r = options.frameRate
-    if r is None:
-        r = 25
     #############################
 
     times = []
