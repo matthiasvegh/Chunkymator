@@ -135,8 +135,6 @@ class StraightLineCameraAnglesTest(unittest.TestCase):
 				self.sameSpline,
 				self.times)
 
-		print (yaws, pitches)
-
 		self.assertEqual(len(yaws), 4)
 		self.assertEqual(len(pitches), 4)
 
@@ -145,6 +143,35 @@ class StraightLineCameraAnglesTest(unittest.TestCase):
 
 		for pitch in pitches:
 			self.assertAlmostEqual(pitch, 225)
+
+
+class RegularSplineTest(unittest.TestCase):
+
+    def setUp(self):
+        self.times = [0, 1, 3, 5]
+        self.sameVals = [0, 0, 0, 0]
+        self.increasing = [0, 1, 3, 5]
+        self.result = morph.createRegularSpline(self.times, self.increasing)
+
+    def test_control_points_on_spline_are_same_as_input(self):
+
+        for i in range(len(self.times)):
+            time = self.times[i]
+            expectedValue = self.increasing[i]
+            self.assertAlmostEqual(self.result(time), expectedValue)
+
+    def test_points_on_spline_should_be_between_control_points(self):
+
+        for i in range(len(self.times) -1):
+            previousTime = self.times[i]
+            nextTime = self.times[i+1]
+            currentTime = float(nextTime + previousTime)/2
+
+            previousValue = self.result(previousTime)
+            nextValue = self.result(nextTime)
+            currentValue = self.result(currentTime)
+
+            self.assertTrue(previousValue < currentValue and currentValue < nextValue)
 
 
 if __name__ == "__main__":

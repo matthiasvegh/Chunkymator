@@ -48,6 +48,9 @@ def getCameraAngles(xSpline, ySpline, zSpline, times):
 
     return yawVals, pitchVals
 
+def createRegularSpline(times, values):
+	return UnivariateSpline(times, values)
+
 
 def main():
     parser = optparse.OptionParser(
@@ -138,11 +141,11 @@ def main():
 
     print "total number of frames to be generated: "+str(int(r*(totalLength/v)))
 
-    xSpline = UnivariateSpline(times, xVals)
-    ySpline = UnivariateSpline(times, yVals)
-    zSpline = UnivariateSpline(times, zVals)
-    sunAltitudeSpline = UnivariateSpline(times, sunAltitudeVals)
-    sunAzimuthSpline = UnivariateSpline(times, sunAzimuthVals)
+    xSpline = createRegularSpline(times, xVals)
+    ySpline = createRegularSpline(times, yVals)
+    zSpline = createRegularSpline(times, zVals)
+    sunAltitudeSpline = createRegularSpline(times, sunAltitudeVals)
+    sunAzimuthSpline = createRegularSpline(times, sunAzimuthVals)
 
     yawPath, pitchPath = getCameraAngles(xSpline, ySpline, zSpline, times)
 
