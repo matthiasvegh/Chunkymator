@@ -15,6 +15,19 @@ once that's done, it will start saving the generated .jsons as interpolated<N>.j
 
 Then use chunkys command-line render tool to render all of the files.
 
+Command Line Options
+=====================
+- `-o` or `--outputdir` this specifies where to place generated .jsons
+- `-f` or `--frame-rate` set this to the framerate you intend to play the animation. (default is 25)
+- `-s` or `--traveling-speed` by default, this is 5.4 m/s, which is half of what minecraft's flight speed is.
+
+Camera options
+--------------
+- `-x` or `--focus-on-x`
+- `-y` or `--focus-on-y`
+- `-z` or `--focus-on-z`
+These switches specify where to point the camera while it is traveling. This is useful is you want to showcase a specific building. If they are left out, camera points in the direction of travel.
+
 Rendering
 =========
 Use python to iterate over all the output files and invoke chunky.
