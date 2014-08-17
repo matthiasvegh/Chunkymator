@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-print "CVF Generator for chunky."
-print "loading dependancies..."
 import struct
 import readline
 import os
@@ -19,7 +17,7 @@ def normalize(list, ammount=180):
         elif(list[i+1] - list[i] < -ammount):
             list[i+1] += 2*ammount
 
-def getCameraAngles(xSpline, ySpline, zSpline, times):
+def getCameraAngles(xSpline, ySpline, zSpline, times, fixedX=None, fixedY=None, fixedZ=None):
 
     yawVals = []
     pitchVals = []
@@ -28,9 +26,9 @@ def getCameraAngles(xSpline, ySpline, zSpline, times):
         currentYVal = ySpline(frame)
         currentZVal = zSpline(frame)
 
-        nextXVal = xSpline(frame+1)
-        nextYVal = ySpline(frame+1)
-        nextZVal = zSpline(frame+1)
+        nextXVal = xSpline(frame+1) if fixedX is None else fixedX
+        nextYVal = ySpline(frame+1) if fixedY is None else fixedY
+        nextZVal = zSpline(frame+1) if fixedZ is None else fixedZ
 
         dx = nextXVal - currentXVal
         dy = nextYVal - currentYVal
@@ -55,18 +53,40 @@ def createRegularSpline(times, values):
 def main():
     parser = optparse.OptionParser(
             usage="%prog [options] scene1 scene2 scene3 scene4 ...",
-            description="Chunkymator scene interpolator.")
+            description="Chunkymator scene interpolator."
+            "Source available at https://github.com/matthiasvegh/Chunkymator")
     parser.add_option("-o", "--outputdir", dest="outputdir",
             help="Directory to place interpoalted scenes to.",
             metavar="DIR")
     parser.add_option("-f", "--frame-rate", dest="frameRate",
-            help="What frame rate you intend to play back the interpolatd images.",
-            metavar="NUM")
+            help="What frame rate you intend to play back the interpolated images.",
+            metavar="NUM", type=float)
     parser.add_option("-s", "--traveling-speed", dest="flyingSpeed",
             help="What speed the camera should be traveling.",
-            metavar="NUM")
-    print "done loading"
+            metavar="NUM", type=float)
+    cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
+            "If you specify these, the camera will always point in the direction of "
+            "these coordinates, if you do not specify them, the camera shall always "
+            "point forward."
+            "Either specify them all, or specify none.")
+    cameraPointOptionsGroup.add_option("-x", "--focus-on-x",
+            help="X coordinate of where camera should look.",
+            dest="cameraX",
+            metavar="NUM", type=float)
+    cameraPointOptionsGroup.add_option("-y", "--focus-on-y",
+            help="Y coordinate of where camera should look.",
+            dest="cameraY",
+            metavar="NUM", type=float)
+    cameraPointOptionsGroup.add_option("-z", "--focus-on-z",
+            help="Z coordinate of where camera should look.",
+            dest="cameraZ",
+            metavar="NUM", type=float)
+
+    parser.add_option_group(cameraPointOptionsGroup)
+
     (options, scenes) = parser.parse_args()
+
+    fixedCameraCoord = (options.cameraX, options.cameraY, options.cameraZ)
 
     num = len(scenes)
 
@@ -157,7 +177,7 @@ def main():
     sunAltitudeSpline = createRegularSpline(times, sunAltitudeVals)
     sunAzimuthSpline = createRegularSpline(times, sunAzimuthVals)
 
-    yawPath, pitchPath = getCameraAngles(xSpline, ySpline, zSpline, times)
+    yawPath, pitchPath = getCameraAngles(xSpline, ySpline, zSpline, times, *fixedCameraCoord)
 
     localCVFs = []
 
