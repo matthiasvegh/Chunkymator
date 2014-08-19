@@ -65,7 +65,7 @@ def main():
             help="What speed the camera should be traveling (default: %default m/s).",
             metavar="NUM", default=5.4, type=float)
     parser.add_option("-t", "--length", dest="length",
-            help="Usually the number of intermediate jsons to be generated are calcualated by taking"
+            help="Usually the number of intermediate jsons to be generated are calcualated by taking "
             "the distance between keyframes. This can be overridden by setting this option.",
             metavar="NUM", type=int)
     cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
