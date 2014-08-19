@@ -49,7 +49,7 @@ def getCameraAngles(xSpline, ySpline, zSpline, times, fixedX=None, fixedY=None, 
 def createRegularSpline(times, values):
 	return UnivariateSpline(times, values)
 
-def getValues(cvfList, r, v):
+def getValues(cvfList, r, v, fixedLength=None):
     totalLength = 0.0
     times = []
     times.append(0)
@@ -66,13 +66,13 @@ def getValues(cvfList, r, v):
         nextFrame = (i+1)%num
         nextNextFrame = (i+2)%num
         lastFrame = (i)%num
+        length = 0
         dx = cvfList[nextFrame].getX() - cvfList[lastFrame].getX()
         dy = cvfList[nextFrame].getY() - cvfList[lastFrame].getY()
         dz = cvfList[nextFrame].getZ() - cvfList[lastFrame].getZ()
         length = ((dx*dx+dy*dy+dz*dz)**.5)
-
-        totalLength += length
         times.append( r*(totalLength/v) )
+        totalLength += length
 
         x = cvfList[nextFrame].getX()
         y = cvfList[nextFrame].getY()
@@ -85,6 +85,12 @@ def getValues(cvfList, r, v):
         zVals.append(z)
         sunAltitudeVals.append(sunAltitude)
         sunAzimuthVals.append(sunAzimuth)
+
+    if fixedLength is not None:
+        times = [0]
+        for i in range(num -1):
+            times.append(float(fixedLength)/(num -2) + times[-1])
+        totalLength = times[-1]
 
     return (xVals, yVals, zVals, sunAltitudeVals, sunAzimuthVals, times, totalLength)
 
@@ -169,7 +175,7 @@ def main():
     r = options.frameRate
     #############################
 
-    (xVals, yVals, zVals, sunAltitudeVals, sunAzimuthVals, times, totalLength) = getSplines(cvfList, r, v)
+    (xVals, yVals, zVals, sunAltitudeVals, sunAzimuthVals, times, totalLength) = getValues(cvfList, r, v, options.length)
 
     print "length of requested route: "+str(totalLength)+"m"
 
