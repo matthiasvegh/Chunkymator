@@ -49,7 +49,7 @@ def getCameraAngles(xSpline, ySpline, zSpline, times, fixedX=None, fixedY=None, 
 def createRegularSpline(times, values):
 	return UnivariateSpline(times, values)
 
-def getSplines(cvfList, r, v):
+def getValues(cvfList, r, v):
     totalLength = 0.0
     times = []
     times.append(0)
