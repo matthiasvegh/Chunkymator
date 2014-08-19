@@ -49,6 +49,44 @@ def getCameraAngles(xSpline, ySpline, zSpline, times, fixedX=None, fixedY=None, 
 def createRegularSpline(times, values):
 	return UnivariateSpline(times, values)
 
+def getSplines(cvfList, r, v):
+    totalLength = 0.0
+    times = []
+    times.append(0)
+    xVals = [cvfList[0].getX()]
+    yVals = [cvfList[0].getY()]
+    zVals = [cvfList[0].getZ()]
+    sunAltitudeVals = [cvfList[0].getSunAltitude()]
+    sunAzimuthVals = [cvfList[0].getSunAzimuth()]
+
+    num = len(cvfList)
+
+    for i in range(num -1):
+        # calculate euclidean distance between (i)->(i+1)
+        nextFrame = (i+1)%num
+        nextNextFrame = (i+2)%num
+        lastFrame = (i)%num
+        dx = cvfList[nextFrame].getX() - cvfList[lastFrame].getX()
+        dy = cvfList[nextFrame].getY() - cvfList[lastFrame].getY()
+        dz = cvfList[nextFrame].getZ() - cvfList[lastFrame].getZ()
+        length = ((dx*dx+dy*dy+dz*dz)**.5)
+
+        totalLength += length
+        times.append( r*(totalLength/v) )
+
+        x = cvfList[nextFrame].getX()
+        y = cvfList[nextFrame].getY()
+        z = cvfList[nextFrame].getZ()
+        sunAltitude = cvfList[nextFrame].getSunAltitude()
+        sunAzimuth = cvfList[nextFrame].getSunAzimuth()
+
+        xVals.append(x)
+        yVals.append(y)
+        zVals.append(z)
+        sunAltitudeVals.append(sunAltitude)
+        sunAzimuthVals.append(sunAzimuth)
+
+    return (xVals, yVals, zVals, sunAltitudeVals, sunAzimuthVals, times, totalLength)
 
 def main():
     parser = optparse.OptionParser(
@@ -125,47 +163,13 @@ def main():
 
     ######################## input got, start actual work here.
 
-    totalLength = 0.0
 
     #############################
     v = options.flyingSpeed
     r = options.frameRate
     #############################
 
-    times = []
-    times.append(0)
-    xVals = [cvfList[0].getX()]
-    yVals = [cvfList[0].getY()]
-    zVals = [cvfList[0].getZ()]
-    sunAltitudeVals = [cvfList[0].getSunAltitude()]
-    sunAzimuthVals = [cvfList[0].getSunAzimuth()]
-
-    for i in range(num-1):
-        # calculate euclidean distance between (i)->(i+1)
-        nextFrame = (i+1)%num
-        nextNextFrame = (i+2)%num
-        lastFrame = (i)%num
-        dx = cvfList[nextFrame].getX() - cvfList[lastFrame].getX()
-        dy = cvfList[nextFrame].getY() - cvfList[lastFrame].getY()
-        dz = cvfList[nextFrame].getZ() - cvfList[lastFrame].getZ()
-        length = ((dx*dx+dy*dy+dz*dz)**.5)
-
-        totalLength += length
-        times.append( r*(totalLength/v) )
-
-        x = cvfList[nextFrame].getX()
-        y = cvfList[nextFrame].getY()
-        z = cvfList[nextFrame].getZ()
-        sunAltitude = cvfList[nextFrame].getSunAltitude()
-        sunAzimuth = cvfList[nextFrame].getSunAzimuth()
-
-        xVals.append(x)
-        yVals.append(y)
-        zVals.append(z)
-        sunAltitudeVals.append(sunAltitude)
-        sunAzimuthVals.append(sunAzimuth)
-
-
+    (xVals, yVals, zVals, sunAltitudeVals, sunAzimuthVals, times, totalLength) = getSplines(cvfList, r, v)
 
     print "length of requested route: "+str(totalLength)+"m"
 
