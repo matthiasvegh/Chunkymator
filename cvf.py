@@ -30,9 +30,15 @@ class cvf:
     def getSunAltitude(self):
         return self.sun_altitude
     def getSunAzimuth(self):
-       return self.sun_azimuth
+        return self.sun_azimuth
     def getSunIntensity(self):
-       return self.sun_intensity
+        return self.sun_intensity
+    def getSkyX(self):
+        return self.skyX
+    def getSkyY(self):
+        return self.skyY
+    def getSkyZ(self):
+        return self.skyZ
 
     def setX(self, fl):
         self.x = fl
@@ -60,6 +66,15 @@ class cvf:
     def setSunIntensity(self, fl):
         self.sun_intensity = fl
         self.inputJson['sun']['intensity'] = fl
+	def setSkyX(self, fl):
+		self.skyX = fl
+		self.inputJson['sky']['cloudOffset']['x'] = fl
+	def setSkyY(self, fl):
+		self.skyY = fl
+		self.inputJson['sky']['cloudOffset']['y'] = fl
+	def setSkyZ(self, fl):
+		self.skyZ = fl
+		self.inputJson['sky']['cloudOffset']['z'] = fl
 
     def setName(self, f):
         self.filename = f
@@ -88,6 +103,9 @@ class cvf:
         self.z = 0.0
         self.pitch = 0.0
         self.yaw = 0.0
+        self.skyX = 0.0
+        self.skyY = 0.0
+        self.skyZ = 0.0
 
         inputJsonString = open(name).read()
 
@@ -103,5 +121,7 @@ class cvf:
         self.sun_azimuth = self.inputJson['sun']['azimuth']
         self.sun_intensity = self.inputJson['sun']['intensity']
 
-
+        self.skyX = self.inputJson['sky']['cloudOffset']['x']
+        self.skyY = self.inputJson['sky']['cloudOffset']['y']
+        self.skyZ = self.inputJson['sky']['cloudOffset']['z']
 
