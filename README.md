@@ -20,6 +20,7 @@ Command Line Options
 - `-o` or `--outputdir` this specifies where to place generated .jsons
 - `-f` or `--frame-rate` set this to the framerate you intend to play the animation. (default is 25)
 - `-s` or `--traveling-speed` by default, this is 5.4 m/s, which is half of what minecraft's flight speed is.
+- `-t` or `--length` in this mode, the length of the animation is not defined by the total distance to be traveled, but is set explicitly.
 
 Camera options
 --------------
