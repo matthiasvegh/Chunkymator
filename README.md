@@ -4,6 +4,7 @@ Chunkymator [![Build Status](https://travis-ci.org/matthiasvegh/Chunkymator.png?
 A json generator for Chunky
 
 Requirements: python 2.x, numpy, scipy, and a batch of jsons from Chunky.
+A demonstration video is available [here](http://youtu.be/jW9V5HSIIlw)
 
 Usage
 =====
