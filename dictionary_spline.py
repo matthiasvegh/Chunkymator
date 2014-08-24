@@ -21,8 +21,6 @@ class VectorSpline:
                     self.times, parameterValues)
             elif isinstance(parameterValues[0],
                     (tuple, list)):
-                print 'tuple'
-                print parameterValues
                 spline = []
                 for breadth in range(len(parameterValues[0])):
                     values = []
@@ -41,6 +39,13 @@ class VectorSpline:
         #TODO: Make this pretty with a list comprehension
         returnValue = []
         for spline in self.splines:
-            returnValue.append(spline(time))
+            if isinstance(spline,
+                    (tuple, list)):
+                subSplineValues = []
+                for subSpline in spline:
+                    subSplineValues.append(subSpline(time))
+                returnValue.append(subSplineValues)
+            else:
+                returnValue.append(spline(time))
         return returnValue
 
