@@ -62,6 +62,23 @@ class VectorSplineTest(unittest.TestCase):
 
 		for i in range(4):
 			self.assertAlmostEqual(results[i][0][0], vector[i][0])
+			self.assertAlmostEqual(results[i][0][1], vector[i][1])
+
+	def test_tuples_should_be_interpolated_piecewise_even_if_other_params_are_present(self):
+		vector1 = [(1, 10), (2, 20), (3, 30), (4, 40)]
+		vector2 = [100, 200, 300, 400]
+		times = [1, 2, 3, 4]
+		matrix = [vector1, vector2]
+		v = VectorSpline(matrix, times)
+
+		results = []
+		for i in times:
+			results.append(v(i))
+
+		for i in range(4):
+			self.assertAlmostEqual(results[i][0][0], vector1[i][0])
+			self.assertAlmostEqual(results[i][0][1], vector1[i][1])
+			self.assertAlmostEqual(results[i][1], vector2[i])
 
 if __name__ == "__main__":
 	unittest.main()
