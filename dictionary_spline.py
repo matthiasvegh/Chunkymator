@@ -19,6 +19,19 @@ class VectorSpline:
                     (int, long, float, complex)):
                 spline = scipy.interpolate.UnivariateSpline(
                     self.times, parameterValues)
+            elif isinstance(parameterValues[0],
+                    (tuple, list)):
+                print 'tuple'
+                print parameterValues
+                spline = []
+                for breadth in range(len(parameterValues[0])):
+                    values = []
+                    for value in range(len(parameterValues)):
+                        values.append(parameterValues[value][breadth])
+
+                    subSpline = scipy.interpolate.UnivariateSpline(
+                           self.times, values)
+                    spline.append(subSpline)
             else:
                 spline = DummySpline(parameterValues)
             self.splines.append(spline)
