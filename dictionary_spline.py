@@ -2,6 +2,12 @@ import json
 import scipy.interpolate
 
 
+class DummySpline:
+    def __init__(self, values):
+        self.value = values[0]
+    def __call__(self, time):
+        return self.value
+
 class VectorSpline:
     def __init__(self, matrix, times):
         self.matrix = matrix
@@ -9,8 +15,12 @@ class VectorSpline:
 
         self.splines = []
         for parameterValues in self.matrix:
-            spline = scipy.interpolate.UnivariateSpline(
+            if isinstance(parameterValues[0],
+                    (int, long, float, complex)):
+                spline = scipy.interpolate.UnivariateSpline(
                     self.times, parameterValues)
+            else:
+                spline = DummySpline(parameterValues)
             self.splines.append(spline)
 
     def __call__(self, time):

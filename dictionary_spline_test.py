@@ -37,6 +37,19 @@ class VectorSplineTest(unittest.TestCase):
 			self.assertAlmostEqual(results[i][0], vector1[i])
 			self.assertAlmostEqual(results[i][1], vector2[i])
 
+	def test_strings_should_not_be_interpolated(self):
+		vector = ["a", "b", "c", "d"]
+		times = [1, 2, 3, 4]
+		matrix = [vector]
+		v = VectorSpline(matrix, times)
+
+		results = []
+		for i in times:
+			results.append(v(i))
+
+		for result in results:
+			self.assertEqual(result, ["a"])
+
 
 if __name__ == "__main__":
 	unittest.main()
