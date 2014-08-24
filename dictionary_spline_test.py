@@ -21,5 +21,22 @@ class VectorSplineTest(unittest.TestCase):
 			self.assertAlmostEqual(results[i][0], vector[i])
 
 
+	def test_values_of_controls_should_match_in_two_parameters(self):
+		vector1 = [1, 2, 3, 4]
+		vector2 = [2, 3, 4, 5]
+		times = [1, 2, 3, 4]
+
+		matrix = [vector1, vector2]
+
+		v = VectorSpline(matrix, times)
+		results = []
+		for i in times:
+			results.append(v(i))
+
+		for i in range(4):
+			self.assertAlmostEqual(results[i][0], vector1[i])
+			self.assertAlmostEqual(results[i][1], vector2[i])
+
+
 if __name__ == "__main__":
 	unittest.main()
