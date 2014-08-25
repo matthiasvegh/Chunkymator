@@ -13,9 +13,7 @@ class VectorSplineTest(unittest.TestCase):
 		matrix = [vector]
 
 		v = VectorSpline(matrix, times)
-		results = []
-		for i in times:
-			results.append(v(i))
+		results = [v(i) for i in times]
 
 		for i in range(4):
 			self.assertAlmostEqual(results[i][0], vector[i])
@@ -29,9 +27,7 @@ class VectorSplineTest(unittest.TestCase):
 		matrix = [vector1, vector2]
 
 		v = VectorSpline(matrix, times)
-		results = []
-		for i in times:
-			results.append(v(i))
+		results = [v(i) for i in times]
 
 		for i in range(4):
 			self.assertAlmostEqual(results[i][0], vector1[i])
@@ -43,9 +39,7 @@ class VectorSplineTest(unittest.TestCase):
 		matrix = [vector]
 		v = VectorSpline(matrix, times)
 
-		results = []
-		for i in times:
-			results.append(v(i))
+		results = [v(i) for i in times]
 
 		for result in results:
 			self.assertEqual(result, ["a"])
@@ -56,9 +50,7 @@ class VectorSplineTest(unittest.TestCase):
 		matrix = [vector]
 		v = VectorSpline(matrix, times)
 
-		results = []
-		for i in times:
-			results.append(v(i))
+		results = [v(i) for i in times]
 
 		for i in range(4):
 			self.assertAlmostEqual(results[i][0][0], vector[i][0])
@@ -71,9 +63,7 @@ class VectorSplineTest(unittest.TestCase):
 		matrix = [vector1, vector2]
 		v = VectorSpline(matrix, times)
 
-		results = []
-		for i in times:
-			results.append(v(i))
+		results = [v(i) for i in times]
 
 		for i in range(4):
 			self.assertAlmostEqual(results[i][0][0], vector1[i][0])
@@ -86,9 +76,7 @@ class VectorSplineTest(unittest.TestCase):
 		matrix = [vector]
 		v = VectorSpline(matrix, times)
 
-		results = []
-		for i in times:
-			results.append(v(i))
+		results = [v(i) for i in times]
 
 		for i in range(4):
 			self.assertAlmostEqual(results[i][0][0][0], vector[i][0][0])
