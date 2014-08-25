@@ -94,5 +94,22 @@ class VectorSplineTest(unittest.TestCase):
 		for i in range(4):
 			self.assertAlmostEqual(results[i][0]['x'], vector[i]['x'])
 
+	def test_non_scalar_dictionaries_should_be_interpolated_correctly(self):
+		vector = [
+				{'x':1, 'y':10, 'z':100},
+				{'x':2, 'y':20, 'z':200},
+				{'x':3, 'y':30, 'z':300},
+				{'x':4, 'y':40, 'z':400}]
+		times = [1, 2, 3, 4]
+		matrix = [vector]
+		v = VectorSpline(matrix, times)
+
+		results = [v(i) for i in times]
+
+		for i in range(4):
+			self.assertAlmostEqual(results[i][0]['x'], vector[i]['x'])
+			self.assertAlmostEqual(results[i][0]['y'], vector[i]['y'])
+			self.assertAlmostEqual(results[i][0]['z'], vector[i]['z'])
+
 if __name__ == "__main__":
 	unittest.main()
