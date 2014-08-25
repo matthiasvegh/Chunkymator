@@ -83,5 +83,16 @@ class VectorSplineTest(unittest.TestCase):
 			self.assertAlmostEqual(results[i][0][0][1], vector[i][0][1])
 			self.assertAlmostEqual(results[i][0][1], vector[i][1])
 
+	def test_scalar_dictionaries_should_be_interpolated_regularly(self):
+		vector = [{'x':1}, {'x':2}, {'x':3}, {'x':4}]
+		times = [1, 2, 3, 4]
+		matrix = [vector]
+		v = VectorSpline(matrix, times)
+
+		results = [v(i) for i in times]
+
+		for i in range(4):
+			self.assertAlmostEqual(results[i][0]['x'], vector[i]['x'])
+
 if __name__ == "__main__":
 	unittest.main()

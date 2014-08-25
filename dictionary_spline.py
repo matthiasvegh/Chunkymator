@@ -29,13 +29,21 @@ class VectorSpline:
                     valueses.append(values)
 
                 spline = VectorSpline(valueses, self.times)
+            elif isinstance(parameterValues[0],
+                    (dict)):
+                spline = {}
+                for key in parameterValues[0].keys():
+                    values = []
+                    for i in range(len(parameterValues)):
+                        values.append(parameterValues[i][key])
+                    spline[key] = VectorSpline([values], self.times)
+
             else:
                 spline = DummySpline(parameterValues)
             self.splines.append(spline)
 
     def __call__(self, time):
 
-        #TODO: Make this pretty with a list comprehension
         returnValue = []
         for spline in self.splines:
             if isinstance(spline,
@@ -46,6 +54,11 @@ class VectorSpline:
                 returnValue.append(subSplineValues)
             elif spline.__class__.__name__ == self.__class__.__name__:
                 returnValue.append(spline(time))
+            elif isinstance(spline, (dict)):
+                dictionary = {}
+                for key in spline.keys():
+                    dictionary[key] = spline[key](time)[0]
+                returnValue.append(dictionary)
             else:
                 returnValue.append(spline(time))
         return returnValue
