@@ -21,15 +21,14 @@ class VectorSpline:
                     self.times, parameterValues)
             elif isinstance(parameterValues[0],
                     (tuple, list)):
-                spline = []
+                valueses = []
                 for breadth in range(len(parameterValues[0])):
                     values = []
                     for value in range(len(parameterValues)):
                         values.append(parameterValues[value][breadth])
+                    valueses.append(values)
 
-                    subSpline = scipy.interpolate.UnivariateSpline(
-                           self.times, values)
-                    spline.append(subSpline)
+                spline = VectorSpline(valueses, self.times)
             else:
                 spline = DummySpline(parameterValues)
             self.splines.append(spline)
@@ -45,6 +44,8 @@ class VectorSpline:
                 for subSpline in spline:
                     subSplineValues.append(subSpline(time))
                 returnValue.append(subSplineValues)
+            elif spline.__class__.__name__ == self.__class__.__name__:
+                returnValue.append(spline(time))
             else:
                 returnValue.append(spline(time))
         return returnValue
