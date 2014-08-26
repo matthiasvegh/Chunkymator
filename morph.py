@@ -10,13 +10,6 @@ from cvf import *
 from scipy.interpolate import UnivariateSpline
 from math import sin, cos, tan, asin, acos, atan2, sqrt, pi
 
-def normalize(list, ammount=180):
-    for i in range(len(list)-1):
-        if(list[i+1] - list[i] > ammount):
-            list[i+1] -= 2*ammount
-        elif(list[i+1] - list[i] < -ammount):
-            list[i+1] += 2*ammount
-
 def getCameraAngles(xSpline, ySpline, zSpline, times, fixedX=None, fixedY=None, fixedZ=None):
 
     yawVals = []
