@@ -46,16 +46,14 @@ def createRegularSpline(times, values):
 def getTimes(cvfList, r, v, fixedLength=None):
     totalLength = 0.0
     times = []
-    times.append(0)
 
     num = len(cvfList)
 
     for i in range(num -1):
         # calculate euclidean distance between (i)->(i+1)
-        nextFrame = (i+1)%num
-        nextNextFrame = (i+2)%num
-        lastFrame = (i)%num
-        length = 0
+        nextFrame = (i+2)%num
+        nextNextFrame = (i+3)%num
+        lastFrame = (i+1)%num
         dx = cvfList[nextFrame].getX() - cvfList[lastFrame].getX()
         dy = cvfList[nextFrame].getY() - cvfList[lastFrame].getY()
         dz = cvfList[nextFrame].getZ() - cvfList[lastFrame].getZ()
@@ -67,12 +65,16 @@ def getTimes(cvfList, r, v, fixedLength=None):
         y = cvfList[nextFrame].getY()
         z = cvfList[nextFrame].getZ()
 
+    times.append(r*(totalLength/v))
+
     if fixedLength is not None:
         times = [0]
         for i in range(num -1):
             times.append(float(fixedLength)/(num -2) + times[-1])
         totalLength = times[-1]
 
+    print len(times)
+    print times
     return times, totalLength
 
 def main():
@@ -165,11 +167,12 @@ def main():
 
     jsonList = [c.inputJson for c in cvfList]
     jsonSpline = VectorSpline([jsonList], times)
+    zSpline = jsonSpline.splines[0]['camera'].splines[0]['position'].splines[0]['z']
 
 
     localCVFs = []
 
-    for i in range(int(totalLength)):
+    for i in range(int(times[-1])):
 
         json = jsonSpline(i)[0]
         c=copy.deepcopy(cvfList[-1])
@@ -180,8 +183,8 @@ def main():
     xValues = []
     yValues = []
     zValues = []
+    print times
 
-    print "localCVFs.size()", len(localCVFs)
     for cvf_ in localCVFs:
         xValues.append(cvf_.getX())
         yValues.append(cvf_.getY())
