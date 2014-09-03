@@ -17,48 +17,43 @@ def deg2rad(theta):
 
 class cvf:
     def getX(self):
-        return self.x
+        return self.inputJson['camera']['position']['x']
     def getY(self):
-        return self.y
+        return self.inputJson['camera']['position']['y']
     def getZ(self):
+        return self.inputJson['camera']['position']['z']
         return self.z
     def getPitch(self):
+        return self.inputJson['camera']['orientation']['pitch']
         return rad2deg(self.pitch)
     def getYaw(self):
+        return self.inputJson['camera']['orientation']['yaw']
         return rad2deg(self.yaw)
 
     def getSunAltitude(self):
-        return self.sun_altitude
+        return self.inputJson['sun']['altitude']
     def getSunAzimuth(self):
-        return self.sun_azimuth
+        return self.inputJson['sun']['azimuth']
     def getSunIntensity(self):
-        return self.sun_intensity
+        return self.inputJson['sun']['intensity']
 
     def setX(self, fl):
-        self.x = fl
         self.inputJson['camera']['position']['x'] = fl
     def setY(self, fl):
-        self.y = fl
         self.inputJson['camera']['position']['y'] = fl
     def setZ(self, fl):
-        self.z = fl
         self.inputJson['camera']['position']['z'] = fl
     def setYaw(self, flr):
         fl = deg2rad(flr)
         self.inputJson['camera']['orientation']['yaw'] = fl
-        self.yaw = fl
     def setPitch(self, flr):
         fl = deg2rad(flr)
         self.inputJson['camera']['orientation']['pitch'] = fl
-        self.pitch = fl
     def setSunAltitude(self, fl):
-        self.sun_altitude = fl
         self.inputJson['sun']['altitude'] = fl
     def setSunAzimuth(self, fl):
-        self.sun_azimuth = fl
         self.inputJson['sun']['azimuth'] = fl
     def setSunIntensity(self, fl):
-        self.sun_intensity = fl
         self.inputJson['sun']['intensity'] = fl
 
     def setName(self, f):
@@ -70,39 +65,11 @@ class cvf:
 
 
     filename = ""
-    x = 0.0
-    y = 0.0
-    z = 0.0
-    pitch = 0.0
-    yaw = 0.0
-
-    sun_altitude = 0.0
-    sun_azimuth = 0.0
-    sun_intensity = 0.0
     inputJson = {}
 
     def __init__(self, name):
         self.filename = name
-        self.x = 0.0
-        self.y = 0.0
-        self.z = 0.0
-        self.pitch = 0.0
-        self.yaw = 0.0
-        self.skyX = 0.0
-        self.skyY = 0.0
-        self.skyZ = 0.0
-
         inputJsonString = open(name).read()
 
         self.inputJson = json.loads(inputJsonString)
-
-        self.x = self.inputJson['camera']['position']['x']
-        self.y = self.inputJson['camera']['position']['y']
-        self.z = self.inputJson['camera']['position']['z']
-        self.pitch = self.inputJson['camera']['orientation']['pitch']
-        self.yaw = self.inputJson['camera']['orientation']['yaw']
-
-        self.sun_altitude = self.inputJson['sun']['altitude']
-        self.sun_azimuth = self.inputJson['sun']['azimuth']
-        self.sun_intensity = self.inputJson['sun']['intensity']
 
