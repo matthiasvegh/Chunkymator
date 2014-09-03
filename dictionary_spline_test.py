@@ -129,5 +129,19 @@ class VectorSplineTest(unittest.TestCase):
 			self.assertAlmostEqual(results[i][0]['z'], vector[i]['z'])
 			self.assertAlmostEqual(results[i][0]['d']['a'], vector[i]['d']['a'])
 
+	def test_equal_elements_should_create_equal_spline(self):
+		vector = [1, 1, 1, 1]
+		times = [1, 2, 3, 4]
+		matrix = [vector]
+		v = VectorSpline(matrix, times)
+
+		results = [v(i)[0] for i in times]
+
+		self.assertSequenceEqual(results, vector)
+		for i in range(3):
+			intermediate = i+0.5
+			self.assertEqual(v(i)[0], 1)
+
+
 if __name__ == "__main__":
 	unittest.main()

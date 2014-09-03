@@ -17,8 +17,12 @@ class VectorSpline:
         for parameterValues in self.matrix:
             if isinstance(parameterValues[0],
                     (int, long, float, complex)):
-                spline = scipy.interpolate.UnivariateSpline(
-                    self.times, parameterValues)
+                if(parameterValues.count(parameterValues[0]) ==
+                        len(parameterValues)):
+                    spline = DummySpline(parameterValues)
+                else:
+                    spline = scipy.interpolate.UnivariateSpline(
+                        self.times, parameterValues)
             elif isinstance(parameterValues[0],
                     (tuple, list)):
                 valueses = []
