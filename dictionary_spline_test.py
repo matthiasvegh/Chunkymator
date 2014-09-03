@@ -129,6 +129,23 @@ class VectorSplineTest(unittest.TestCase):
 			self.assertAlmostEqual(results[i][0]['z'], vector[i]['z'])
 			self.assertAlmostEqual(results[i][0]['d']['a'], vector[i]['d']['a'])
 
+	def test_multiple_elements_in_recursive_dictionaries_should_be_interpolated_correctly(self):
+		vector = [
+				{'x':1, 'y':10, 'z':100, 'd':{'a':5, 'b':-1, 'c':-10}},
+				{'x':2, 'y':20, 'z':200, 'd':{'a':6, 'b':-2, 'c':-20}},
+				{'x':3, 'y':30, 'z':300, 'd':{'a':7, 'b':-3, 'c':-30}},
+				{'x':4, 'y':40, 'z':400, 'd':{'a':8, 'b':-4, 'c':-40}}]
+		times = [1, 2, 3, 4]
+		matrix = [vector]
+		v = VectorSpline(matrix, times)
+
+		results = [v(i)[0] for i in times]
+
+		for i in range(4):
+			self.assertAlmostEqual(results[i]['d']['a'], vector[i]['d']['a'])
+			self.assertAlmostEqual(results[i]['d']['b'], vector[i]['d']['b'])
+			self.assertAlmostEqual(results[i]['d']['c'], vector[i]['d']['c'])
+
 	def test_equal_elements_should_create_equal_spline(self):
 		vector = [1, 1, 1, 1]
 		times = [1, 2, 3, 4]
