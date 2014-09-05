@@ -54,5 +54,29 @@ class GetTimes_consistency_test(unittest.TestCase):
             self.assertEqual(t1, t2*2)
 
 
+class GetTimes_length_test(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_one_length_cvf_should_have_one_length_times(self):
+
+        mockCvfs = [mockCVF(0, 0, 0)]
+
+        (times, length) = morph.getTimes(mockCvfs, 1, 1)
+
+        self.assertEqual(len(times), 1)
+        self.assertEqual(times[0], 0)
+
+    def test_two_length_cvf_should_have_two_length_times(self):
+        mockCvfs = [
+                mockCVF(0, 0, 0),
+                mockCVF(1, 0, 0)
+                ]
+
+        (times, length) = morph.getTimes(mockCvfs, 1, 1)
+        self.assertEqual(len(times), 2)
+        self.assertNotEqual(times[0], times[1])
+
 if __name__ == "__main__":
     unittest.main()
