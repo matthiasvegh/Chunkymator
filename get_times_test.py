@@ -42,6 +42,16 @@ class GetTimes_consistency_test(unittest.TestCase):
 
         self.assertEqual(length1, length2)
 
+    def test_doubling_speed_should_halve_times(self):
+
+        speed1 = 1
+        speed2 = 2*speed1
+
+        (times1, length1) = morph.getTimes(self.mockCvfs, 1, speed1)
+        (times2, length2) = morph.getTimes(self.mockCvfs, 1, speed2)
+
+        for t1, t2 in zip(times1, times2):
+            self.assertEqual(t1, t2*2)
 
 
 if __name__ == "__main__":
