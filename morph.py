@@ -44,38 +44,23 @@ def createRegularSpline(times, values):
     return UnivariateSpline(times, values)
 
 def getTimes(cvfList, r, v, fixedLength=None):
+    times = [0.0]
     totalLength = 0.0
-    times = []
 
-    num = len(cvfList)
+    for i in range(len(cvfList) -1):
+        previousFrame = cvfList[i]
+        nextFrame = cvfList[i+1]
 
-    for i in range(num -1):
-        # calculate euclidean distance between (i)->(i+1)
-        nextFrame = (i+2)%num
-        nextNextFrame = (i+3)%num
-        lastFrame = (i+1)%num
-        dx = cvfList[nextFrame].getX() - cvfList[lastFrame].getX()
-        dy = cvfList[nextFrame].getY() - cvfList[lastFrame].getY()
-        dz = cvfList[nextFrame].getZ() - cvfList[lastFrame].getZ()
-        length = ((dx*dx+dy*dy+dz*dz)**.5)
-        times.append( r*(totalLength/v) )
-        totalLength += length
+        dx = nextFrame.getX() - previousFrame.getX()
+        dy = nextFrame.getY() - previousFrame.getY()
+        dz = nextFrame.getZ() - previousFrame.getZ()
 
-        x = cvfList[nextFrame].getX()
-        y = cvfList[nextFrame].getY()
-        z = cvfList[nextFrame].getZ()
+        distance = (dx*dx + dy*dy + dz*dz)**0.5
 
-    times.append(r*(totalLength/v))
+        times.append(distance*r/v)
+        totalLength += distance
 
-    if fixedLength is not None:
-        times = [0]
-        for i in range(num -1):
-            times.append(float(fixedLength)/(num -2) + times[-1])
-        totalLength = times[-1]
-
-    print len(times)
-    print times
-    return times, totalLength
+    return (times, totalLength)
 
 def main():
     parser = optparse.OptionParser(

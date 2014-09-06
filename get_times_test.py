@@ -1,5 +1,6 @@
 import unittest
 import morph
+import copy
 
 class mockCVF:
 
@@ -52,6 +53,19 @@ class GetTimes_consistency_test(unittest.TestCase):
 
         for t1, t2 in zip(times1, times2):
             self.assertEqual(t1, t2*2)
+
+    def test_appending_to_input_should_append_to_time(self):
+
+        newCvfs = copy.deepcopy(self.mockCvfs)
+        newCvfs.append(mockCVF(4, 0, 0))
+
+        (oldTimes, oldLength) = morph.getTimes(self.mockCvfs, 1, 1)
+        (newTimes, newLength) = morph.getTimes(newCvfs, 1, 1)
+
+        for (old, new) in zip(oldTimes, newTimes):
+            self.assertEqual(old, new)
+
+        self.assertEqual(len(oldTimes) +1, len(newTimes))
 
 
 class GetTimes_length_test(unittest.TestCase):
