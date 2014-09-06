@@ -58,6 +58,7 @@ def getTimes(cvfList, r, v, fixedLength=None):
         distance = (dx*dx + dy*dy + dz*dz)**0.5
 
         times.append(distance*r/v)
+        times[-1] += times[-2]
         totalLength += distance
 
     return (times, totalLength)
@@ -152,8 +153,6 @@ def main():
 
     jsonList = [c.inputJson for c in cvfList]
     jsonSpline = VectorSpline([jsonList], times)
-    zSpline = jsonSpline.splines[0]['camera'].splines[0]['position'].splines[0]['z']
-
 
     localCVFs = []
 

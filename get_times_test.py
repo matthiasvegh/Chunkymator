@@ -65,6 +65,7 @@ class GetTimes_consistency_test(unittest.TestCase):
         for (old, new) in zip(oldTimes, newTimes):
             self.assertEqual(old, new)
 
+        self.assertGreater(newTimes[-1], oldTimes[-1])
         self.assertEqual(len(oldTimes) +1, len(newTimes))
 
 
