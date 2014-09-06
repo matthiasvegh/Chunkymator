@@ -68,6 +68,20 @@ class GetTimes_consistency_test(unittest.TestCase):
         self.assertGreater(newTimes[-1], oldTimes[-1])
         self.assertEqual(len(oldTimes) +1, len(newTimes))
 
+    def test_triangularity_should_hold(self):
+
+        newCvfs = [self.mockCvfs[-1], mockCVF(1, 0, 0)]
+        (newTimes, newLength) = morph.getTimes(newCvfs, 1, 1)
+
+        (oldTimes, oldLength) = morph.getTimes(self.mockCvfs, 1, 1)
+
+        appendedCvfs = copy.deepcopy(self.mockCvfs)
+        appendedCvfs.append(newCvfs[-1])
+        (appendedTimes, appendedLength) = morph.getTimes(appendedCvfs, 1, 1)
+
+        self.assertEqual(oldLength + newLength, appendedLength)
+        self.assertEqual(appendedTimes[-1] - appendedTimes[-2],
+                newTimes[-1])
 
 class GetTimes_length_test(unittest.TestCase):
 
