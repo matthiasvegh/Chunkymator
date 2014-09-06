@@ -10,6 +10,7 @@ before_install:
 
 script:
     - python dictionary_spline_test.py
+    - python get_times_test.py
 
 notifications:
     email:
