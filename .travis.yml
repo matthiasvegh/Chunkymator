@@ -9,8 +9,8 @@ before_install:
     - sudo apt-get install -qq python-numpy python-scipy
 
 script:
-    - python test.py
     - python dictionary_spline_test.py
+    - python get_times_test.py
 
 notifications:
     email:

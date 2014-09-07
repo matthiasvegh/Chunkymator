@@ -6,29 +6,23 @@ import os
 import copy
 import optparse
 from cvf import *
+from dictionary_spline import *
 
 from scipy.interpolate import UnivariateSpline
 from math import sin, cos, tan, asin, acos, atan2, sqrt, pi
 
-def normalize(list, ammount=180):
-    for i in range(len(list)-1):
-        if(list[i+1] - list[i] > ammount):
-            list[i+1] -= 2*ammount
-        elif(list[i+1] - list[i] < -ammount):
-            list[i+1] += 2*ammount
-
-def getCameraAngles(xSpline, ySpline, zSpline, times, fixedX=None, fixedY=None, fixedZ=None):
+def getCameraAngles(xSpline, ySpline, zSpline, frames, fixedX=None, fixedY=None, fixedZ=None):
 
     yawVals = []
     pitchVals = []
-    for frame in range(int(times[-1])):
-        currentXVal = xSpline(frame)
-        currentYVal = ySpline(frame)
-        currentZVal = zSpline(frame)
+    for frame in range(int(frames)):
+        currentXVal = xSpline[frame]
+        currentYVal = ySpline[frame]
+        currentZVal = zSpline[frame]
 
-        nextXVal = xSpline(frame+1) if fixedX is None else fixedX
-        nextYVal = ySpline(frame+1) if fixedY is None else fixedY
-        nextZVal = zSpline(frame+1) if fixedZ is None else fixedZ
+        nextXVal = xSpline[(frame+1) % frames] if fixedX is None else fixedX
+        nextYVal = ySpline[(frame+1) % frames] if fixedY is None else fixedY
+        nextZVal = zSpline[(frame+1) % frames] if fixedZ is None else fixedZ
 
         dx = nextXVal - currentXVal
         dy = nextYVal - currentYVal
@@ -47,52 +41,37 @@ def getCameraAngles(xSpline, ySpline, zSpline, times, fixedX=None, fixedY=None, 
     return yawVals, pitchVals
 
 def createRegularSpline(times, values):
-	return UnivariateSpline(times, values)
+    return UnivariateSpline(times, values)
 
-def getValues(cvfList, r, v, fixedLength=None):
+def getTimes(cvfList, r, v, fixedLength=None):
+    times = [0.0]
     totalLength = 0.0
-    times = []
-    times.append(0)
-    xVals = [cvfList[0].getX()]
-    yVals = [cvfList[0].getY()]
-    zVals = [cvfList[0].getZ()]
-    sunAltitudeVals = [cvfList[0].getSunAltitude()]
-    sunAzimuthVals = [cvfList[0].getSunAzimuth()]
 
-    num = len(cvfList)
+    areAllSame = (cvfList.count(cvfList[0]) == len(cvfList))
 
-    for i in range(num -1):
-        # calculate euclidean distance between (i)->(i+1)
-        nextFrame = (i+1)%num
-        nextNextFrame = (i+2)%num
-        lastFrame = (i)%num
-        length = 0
-        dx = cvfList[nextFrame].getX() - cvfList[lastFrame].getX()
-        dy = cvfList[nextFrame].getY() - cvfList[lastFrame].getY()
-        dz = cvfList[nextFrame].getZ() - cvfList[lastFrame].getZ()
-        length = ((dx*dx+dy*dy+dz*dz)**.5)
-        times.append( r*(totalLength/v) )
-        totalLength += length
+    if areAllSame and len(cvfList) > 1:
+        times = [i*(fixedLength)/(len(cvfList) -1) for i in range(len(cvfList))]
+        totalLength = fixedLength
+    else:
+        for i in range(len(cvfList) -1):
+            previousFrame = cvfList[i]
+            nextFrame = cvfList[i+1]
 
-        x = cvfList[nextFrame].getX()
-        y = cvfList[nextFrame].getY()
-        z = cvfList[nextFrame].getZ()
-        sunAltitude = cvfList[nextFrame].getSunAltitude()
-        sunAzimuth = cvfList[nextFrame].getSunAzimuth()
+            dx = nextFrame.getX() - previousFrame.getX()
+            dy = nextFrame.getY() - previousFrame.getY()
+            dz = nextFrame.getZ() - previousFrame.getZ()
 
-        xVals.append(x)
-        yVals.append(y)
-        zVals.append(z)
-        sunAltitudeVals.append(sunAltitude)
-        sunAzimuthVals.append(sunAzimuth)
+            distance = (dx*dx + dy*dy + dz*dz)**0.5
+
+            times.append(distance*r/v)
+            times[-1] += times[-2]
+            totalLength += distance
 
     if fixedLength is not None:
-        times = [0]
-        for i in range(num -1):
-            times.append(float(fixedLength)/(num -2) + times[-1])
-        totalLength = times[-1]
+        factor = fixedLength / times[-1]
+        times[:] = [time*factor for time in times]
 
-    return (xVals, yVals, zVals, sunAltitudeVals, sunAzimuthVals, times, totalLength)
+    return (times, totalLength)
 
 def main():
     parser = optparse.OptionParser(
@@ -175,43 +154,46 @@ def main():
     r = options.frameRate
     #############################
 
-    (xVals, yVals, zVals, sunAltitudeVals, sunAzimuthVals, times, totalLength) = getValues(cvfList, r, v, options.length)
+    times, totalLength = getTimes(cvfList, r, v, options.length)
 
     print "length of requested route: "+str(totalLength)+"m"
 
     print "total number of frames to be generated: "+str(int(r*(totalLength/v)))
 
-    xSpline = createRegularSpline(times, xVals)
-    ySpline = createRegularSpline(times, yVals)
-    zSpline = createRegularSpline(times, zVals)
-    sunAltitudeSpline = createRegularSpline(times, sunAltitudeVals)
-    sunAzimuthSpline = createRegularSpline(times, sunAzimuthVals)
 
-    yawPath, pitchPath = getCameraAngles(xSpline, ySpline, zSpline, times, *fixedCameraCoord)
+    jsonList = [c.inputJson for c in cvfList]
+    jsonSpline = VectorSpline([jsonList], times)
 
     localCVFs = []
 
-
     for i in range(int(times[-1])):
 
-        x = xSpline(i)
-        y = ySpline(i)
-        z = zSpline(i)
-        pitch = pitchPath[i]
-        yaw = yawPath[i]
-        sunAltitude = sunAltitudeSpline(i)
-        sunAzimuth = sunAzimuthSpline(i)
-
-
+        json = jsonSpline(i)[0]
         c=copy.deepcopy(cvfList[-1])
-        c.setX(x)
-        c.setY(y)
-        c.setZ(z)
-        c.setPitch(pitch)
-        c.setYaw(yaw)
-        c.setSunAltitude(sunAltitude)
-        c.setSunAzimuth(sunAzimuth)
+        c.inputJson = json
+        c.inputJson['renderTime'] = cvfList[-1].inputJson['renderTime']
+        localCVFs.append(c)
 
+    xValues = []
+    yValues = []
+    zValues = []
+    print times
+
+    for cvf_ in localCVFs:
+        xValues.append(cvf_.getX())
+        yValues.append(cvf_.getY())
+        zValues.append(cvf_.getZ())
+
+    yawPath, pitchPath = getCameraAngles(xValues, yValues, zValues, len(localCVFs), *fixedCameraCoord)
+
+    for cvfIndex in range(len(localCVFs)):
+        localCVFs[cvfIndex].setYaw(yawPath[cvfIndex])
+        localCVFs[cvfIndex].setPitch(pitchPath[cvfIndex])
+
+    for i in range(len(localCVFs)):
+        c = localCVFs[i]
+        name = os.path.join(outputDir, "interpolated-"+str(i)+".json")
+        c.setName("interpolated-"+str(i))
         print (str(i)+": "
                 "X: "+str(c.getX())+
                 " Y: "+str(c.getY())+
@@ -220,13 +202,6 @@ def main():
                 " Yaw: "+str(c.getYaw())+
                 " Sun Altitude: "+str(c.getSunAltitude())+
                 " Sun Azimuth: "+str(c.getSunAzimuth()))
-        localCVFs.append(c)
-
-
-    for i in range(len(localCVFs)):
-        c = localCVFs[i]
-        name = os.path.join(outputDir, "interpolated-"+str(i)+".json")
-        c.setName("interpolated-"+str(i))
         c.saveToFile(name);
 
 
