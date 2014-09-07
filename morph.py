@@ -47,7 +47,13 @@ def getTimes(cvfList, r, v, fixedLength=None):
     times = [0.0]
     totalLength = 0.0
 
-    areAllSame = (cvfList.count(cvfList[0]) == len(cvfList))
+    xes = [cvf.getX() for cvf in cvfList]
+    yes = [cvf.getY() for cvf in cvfList]
+    zes = [cvf.getZ() for cvf in cvfList]
+    areAllSame = (
+            xes.count(xes[0]) == len(xes) and
+            yes.count(yes[0]) == len(yes) and
+            zes.count(zes[0]) == len(zes))
 
     if areAllSame and len(cvfList) > 1:
         times = [i*(fixedLength)/(len(cvfList) -1) for i in range(len(cvfList))]
