@@ -61,6 +61,10 @@ def getTimes(cvfList, r, v, fixedLength=None):
         times[-1] += times[-2]
         totalLength += distance
 
+    if fixedLength is not None:
+        factor = fixedLength / times[-1]
+        times[:] = [time*factor for time in times]
+
     return (times, totalLength)
 
 def main():

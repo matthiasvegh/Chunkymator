@@ -107,5 +107,36 @@ class GetTimes_length_test(unittest.TestCase):
         self.assertEqual(len(times), 2)
         self.assertNotEqual(times[0], times[1])
 
+    def test_last_element_of_times_should_be_fixed_if_fixed_length(self):
+        mockCvfs = [
+                mockCVF(0, 0, 0),
+                mockCVF(1, 0, 0),
+                mockCVF(1, 1, 0),
+                mockCVF(1, 1, 1)
+                ]
+        (times, length) = morph.getTimes(mockCvfs, 1, 1, 10)
+        self.assertEqual(times[-1], 10)
+
+    def test_fixed_length_times_should_only_differ_in_a_scalar(self):
+        mockCvfs = [
+                mockCVF(0, 0, 0),
+                mockCVF(1, 0, 0),
+                mockCVF(1, 1, 0),
+                mockCVF(1, 1, 1)
+                ]
+        (times, length) = morph.getTimes(mockCvfs, 1, 1)
+        (fixedTimes, fixedLength) = morph.getTimes(mockCvfs, 1, 1, 10)
+
+        self.assertEqual(length, fixedLength)
+        self.assertEqual(len(times), len(fixedTimes))
+
+        scalar = fixedTimes[-1] / times[-1]
+
+        for time, fixedTime in zip(times, fixedTimes):
+            if time*fixedTime == 0:
+                continue
+            self.assertEqual(fixedTime/time, scalar)
+
+
 if __name__ == "__main__":
     unittest.main()
