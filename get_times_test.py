@@ -9,6 +9,9 @@ class mockCVF:
         self.y = y
         self.z = z
 
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and self.z == other.y
+
     def getX(self):
         return self.x
     def getY(self):
@@ -137,6 +140,17 @@ class GetTimes_length_test(unittest.TestCase):
                 continue
             self.assertEqual(fixedTime/time, scalar)
 
+    def test_fixed_length_should_also_apply_to_zero_distance_points(self):
+        mockCvfs = [
+                mockCVF(0, 0, 0),
+                mockCVF(0, 0, 0),
+                mockCVF(0, 0, 0)
+                ]
+
+        (times, length) = morph.getTimes(mockCvfs, 1, 1, 100)
+        self.assertEqual(times[0], 0)
+        self.assertEqual(times[1], 50)
+        self.assertEqual(times[2], 100)
 
 if __name__ == "__main__":
     unittest.main()

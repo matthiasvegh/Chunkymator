@@ -47,19 +47,25 @@ def getTimes(cvfList, r, v, fixedLength=None):
     times = [0.0]
     totalLength = 0.0
 
-    for i in range(len(cvfList) -1):
-        previousFrame = cvfList[i]
-        nextFrame = cvfList[i+1]
+    areAllSame = (cvfList.count(cvfList[0]) == len(cvfList))
 
-        dx = nextFrame.getX() - previousFrame.getX()
-        dy = nextFrame.getY() - previousFrame.getY()
-        dz = nextFrame.getZ() - previousFrame.getZ()
+    if areAllSame and len(cvfList) > 1:
+        times = [i*(fixedLength)/(len(cvfList) -1) for i in range(len(cvfList))]
+        totalLength = fixedLength
+    else:
+        for i in range(len(cvfList) -1):
+            previousFrame = cvfList[i]
+            nextFrame = cvfList[i+1]
 
-        distance = (dx*dx + dy*dy + dz*dz)**0.5
+            dx = nextFrame.getX() - previousFrame.getX()
+            dy = nextFrame.getY() - previousFrame.getY()
+            dz = nextFrame.getZ() - previousFrame.getZ()
 
-        times.append(distance*r/v)
-        times[-1] += times[-2]
-        totalLength += distance
+            distance = (dx*dx + dy*dy + dz*dz)**0.5
+
+            times.append(distance*r/v)
+            times[-1] += times[-2]
+            totalLength += distance
 
     if fixedLength is not None:
         factor = fixedLength / times[-1]
