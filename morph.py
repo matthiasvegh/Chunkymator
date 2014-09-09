@@ -40,9 +40,6 @@ def getCameraAngles(xSpline, ySpline, zSpline, frames, fixedX=None, fixedY=None,
 
     return yawVals, pitchVals
 
-def createRegularSpline(times, values):
-    return UnivariateSpline(times, values)
-
 def getTimes(cvfList, r, v, fixedLength=None):
     times = [0.0]
     totalLength = 0.0
