@@ -8,8 +8,8 @@ A demonstration video is available [here](http://youtu.be/jW9V5HSIIlw)
 
 Usage
 =====
-Create a couple of scenes in chunky that differ only in their x,y,z positions and camera angles (pitch, yaw).
-Other attributes are not currently interpolated.
+Create a couple of scenes in chunky that are of the same map, with same resolution, chunk lists etc.
+Most attributes of the scene are interpolated, including camera position, orientation, clouds, sun, colours, intensity and so on.
 Once that's done, fire up morph.py, enter the number of scenes, and drag/drop or type the (absolute) filepaths of each scene.
 If all went well, morph.py should start spewing out coordinate data for the interpolated frames, 
 once that's done, it will start saving the generated .jsons as interpolated<N>.json.
