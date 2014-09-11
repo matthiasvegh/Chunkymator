@@ -9,9 +9,11 @@ class DummySpline:
         return self.value
 
 class VectorSpline:
-    def __init__(self, matrix, times):
+    def __init__(self, matrix, times, interpolatingFunction=
+            scipy.interpolate.UnivariateSpline):
         self.matrix = matrix
         self.times = times
+        self.interpolator = interpolatingFunction
 
         self.splines = []
         for parameterValues in self.matrix:
@@ -21,7 +23,7 @@ class VectorSpline:
                         len(parameterValues)):
                     spline = DummySpline(parameterValues)
                 else:
-                    spline = scipy.interpolate.UnivariateSpline(
+                    spline = self.interpolator(
                         self.times, parameterValues)
             elif isinstance(parameterValues[0],
                     (tuple, list)):
