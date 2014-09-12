@@ -1,7 +1,7 @@
 import unittest
 from dictionary_spline import *
 
-class VectorSplineTest(unittest.TestCase):
+class DictionarySplineTest(unittest.TestCase):
 
 	def setUp(self):
 		pass
@@ -12,7 +12,7 @@ class VectorSplineTest(unittest.TestCase):
 
 		matrix = [vector]
 
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 		results = [v(i) for i in times]
 
 		for i in range(4):
@@ -26,7 +26,7 @@ class VectorSplineTest(unittest.TestCase):
 
 		matrix = [vector1, vector2]
 
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 		results = [v(i) for i in times]
 
 		for i in range(4):
@@ -37,7 +37,7 @@ class VectorSplineTest(unittest.TestCase):
 		vector = ["a", "b", "c", "d"]
 		times = [1, 2, 3, 4]
 		matrix = [vector]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i) for i in times]
 
@@ -48,7 +48,7 @@ class VectorSplineTest(unittest.TestCase):
 		vector = [(1, 10), (2, 20), (3, 30), (4, 40)]
 		times = [1, 2, 3, 4]
 		matrix = [vector]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i) for i in times]
 
@@ -61,7 +61,7 @@ class VectorSplineTest(unittest.TestCase):
 		vector2 = [100, 200, 300, 400]
 		times = [1, 2, 3, 4]
 		matrix = [vector1, vector2]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i) for i in times]
 
@@ -74,7 +74,7 @@ class VectorSplineTest(unittest.TestCase):
 		vector = [((1, 10), 100), ((2, 20), 200), ((3, 30), 300), ((4, 40), 400)]
 		times = [1, 2, 3, 4]
 		matrix = [vector]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i) for i in times]
 
@@ -87,7 +87,7 @@ class VectorSplineTest(unittest.TestCase):
 		vector = [{'x':1}, {'x':2}, {'x':3}, {'x':4}]
 		times = [1, 2, 3, 4]
 		matrix = [vector]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i) for i in times]
 
@@ -102,7 +102,7 @@ class VectorSplineTest(unittest.TestCase):
 				{'x':4, 'y':40, 'z':400}]
 		times = [1, 2, 3, 4]
 		matrix = [vector]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i) for i in times]
 
@@ -119,7 +119,7 @@ class VectorSplineTest(unittest.TestCase):
 				{'x':4, 'y':40, 'z':400, 'd':{'a':8}}]
 		times = [1, 2, 3, 4]
 		matrix = [vector]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i) for i in times]
 
@@ -137,7 +137,7 @@ class VectorSplineTest(unittest.TestCase):
 				{'x':4, 'y':40, 'z':400, 'd':{'a':8, 'b':-4, 'c':-40}}]
 		times = [1, 2, 3, 4]
 		matrix = [vector]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i)[0] for i in times]
 
@@ -150,7 +150,7 @@ class VectorSplineTest(unittest.TestCase):
 		vector = [1, 1, 1, 1]
 		times = [1, 2, 3, 4]
 		matrix = [vector]
-		v = VectorSpline(matrix, times)
+		v = DictionarySpline(matrix, times)
 
 		results = [v(i)[0] for i in times]
 

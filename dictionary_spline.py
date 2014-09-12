@@ -8,7 +8,7 @@ class DummySpline:
     def __call__(self, time):
         return self.value
 
-class VectorSpline:
+class DictionarySpline:
     def __init__(self, matrix, times, interpolatingFunction=
             scipy.interpolate.UnivariateSpline):
         self.matrix = matrix
@@ -34,7 +34,7 @@ class VectorSpline:
                         values.append(parameterValues[value][breadth])
                     valueses.append(values)
 
-                spline = VectorSpline(valueses, self.times)
+                spline = DictionarySpline(valueses, self.times)
             elif isinstance(parameterValues[0],
                     (dict)):
                 spline = {}
@@ -42,7 +42,7 @@ class VectorSpline:
                     values = []
                     for i in range(len(parameterValues)):
                         values.append(parameterValues[i][key])
-                    spline[key] = VectorSpline([values], self.times)
+                    spline[key] = DictionarySpline([values], self.times)
 
             else:
                 spline = DummySpline(parameterValues)
