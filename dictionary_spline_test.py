@@ -159,6 +159,14 @@ class DictionarySplineTest(unittest.TestCase):
 			intermediate = i+0.5
 			self.assertEqual(v(i)[0], 1)
 
+	def test_should_create_dummy_spline_if_dummy_is_passed(self):
+		vector = [1, 2, 3, 4]
+		times = [1, 2, 3, 4]
+		matrix = [vector]
+		v = DictionarySpline(matrix, times, DummySpline)
 
+		results = [v(i)[0] for i in times]
+
+		self.assertSequenceEqual(results, [vector[0] for i in range(len(vector))])
 if __name__ == "__main__":
 	unittest.main()
