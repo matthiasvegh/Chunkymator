@@ -2,9 +2,11 @@
 import subprocess
 import optparse
 
+def get_command(scene, chunkyPath, target):
+    return ""
+
 def get_commands(scenes, chunkyPath, target):
-    commands = []
-    return []
+    return [get_command(scene, chunkyPath, target) for scene in scenes]
 
 def main():
 
