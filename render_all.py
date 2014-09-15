@@ -2,6 +2,9 @@
 import subprocess
 import optparse
 
+def get_commands(scenes, chunkyPath, target):
+    pass
+
 def main():
 
     parser = optparse.OptionParser(
