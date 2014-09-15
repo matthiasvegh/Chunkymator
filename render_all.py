@@ -3,7 +3,8 @@ import subprocess
 import optparse
 
 def get_commands(scenes, chunkyPath, target):
-    pass
+    commands = []
+    return []
 
 def main():
 
