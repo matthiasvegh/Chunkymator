@@ -22,13 +22,10 @@ class cvf:
         return self.inputJson['camera']['position']['y']
     def getZ(self):
         return self.inputJson['camera']['position']['z']
-        return self.z
     def getPitch(self):
         return self.inputJson['camera']['orientation']['pitch']
-        return rad2deg(self.pitch)
     def getYaw(self):
         return self.inputJson['camera']['orientation']['yaw']
-        return rad2deg(self.yaw)
 
     def getSunAltitude(self):
         return self.inputJson['sun']['altitude']
