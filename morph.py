@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 
-import struct
-import readline
 import os
 import copy
 import optparse
 from cvf import *
 from dictionary_spline import *
 
-from scipy.interpolate import UnivariateSpline
 from math import sin, cos, tan, asin, acos, atan2, sqrt, pi
 
 def getCameraAngles(xSpline, ySpline, zSpline, frames, fixedX=None, fixedY=None, fixedZ=None):
