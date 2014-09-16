@@ -12,10 +12,9 @@ install:
     - pip install coveralls
 
 script:
-    - python dictionary_spline_test.py
-    - python get_times_test.py
-    - python render_all_test.py
     - coverage run dictionary_spline_test.py
+    - coverage run get_times_test.py
+    - coverage run render_all_test.py
 
 notifications:
     email:
