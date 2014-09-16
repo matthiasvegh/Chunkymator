@@ -12,11 +12,13 @@ install:
     - pip install coveralls
 
 script:
-    - coverage run dictionary_spline_test.py
-    - coverage run get_times_test.py
-    - coverage run render_all_test.py
+    - coverage run -p -a --source=. --omit='*test*' dictionary_spline_test.py
+    - coverage run -p -a --source=. --omit='*test*' get_times_test.py
+    - coverage run -p -a --source=. --omit='*test*' render_all_test.py
 
 after_success:
+    - coverage combine
+    - coverage report
     - coveralls
 
 notifications:
