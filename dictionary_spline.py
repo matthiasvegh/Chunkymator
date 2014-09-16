@@ -3,7 +3,7 @@ import scipy.interpolate
 
 
 class DummySpline:
-    def __init__(self, values, times=[]):
+    def __init__(self, values, times=None):
         self.value = values[0]
     def __call__(self, time):
         return self.value
