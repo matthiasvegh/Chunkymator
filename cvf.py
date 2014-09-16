@@ -7,6 +7,14 @@ def rad2deg(theta):
         return rad2deg(theta+2*3.14159265358)
     return theta * 180/3.14159265358
 
+def deg2rad(theta):
+    if theta > 360.0:
+        return deg2rad(theta-360)
+    if theta < 0.0:
+        return deg2rad(theta+360)
+    return theta * 3.14159265358/180
+
+
 class cvf(object):
     def getX(self):
         return self.inputJson['camera']['position']['x']
