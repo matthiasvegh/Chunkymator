@@ -52,15 +52,7 @@ class DictionarySpline:
 
         returnValue = []
         for spline in self.splines:
-            if isinstance(spline,
-                    (tuple, list)):
-                subSplineValues = []
-                for subSpline in spline:
-                    subSplineValues.append(subSpline(time))
-                returnValue.append(subSplineValues)
-            elif spline.__class__.__name__ == self.__class__.__name__:
-                returnValue.append(spline(time))
-            elif isinstance(spline, (dict)):
+            if isinstance(spline, (dict)):
                 dictionary = {}
                 for key in spline.keys():
                     dictionary[key] = spline[key](time)[0]
