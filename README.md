@@ -1,4 +1,4 @@
-Chunkymator [![Build Status](https://travis-ci.org/matthiasvegh/Chunkymator.png?branch=master)](https://travis-ci.org/matthiasvegh/Chunkymator) [![Code Health](https://landscape.io/github/matthiasvegh/Chunkymator/master/landscape.png)](https://landscape.io/github/matthiasvegh/Chunkymator/master)
+Chunkymator [![Build Status](https://travis-ci.org/matthiasvegh/Chunkymator.png?branch=master)](https://travis-ci.org/matthiasvegh/Chunkymator) [![Code Health](https://landscape.io/github/matthiasvegh/Chunkymator/master/landscape.png)](https://landscape.io/github/matthiasvegh/Chunkymator/master) [![Coverage Status](https://img.shields.io/coveralls/matthiasvegh/Chunkymator.svg)](https://coveralls.io/r/matthiasvegh/Chunkymator?branch=master)
 ===========
 
 A json generator for Chunky
