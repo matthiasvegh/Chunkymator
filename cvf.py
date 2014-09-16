@@ -15,7 +15,7 @@ def deg2rad(theta):
     return theta * 3.14159265358/180
 
 
-class cvf:
+class cvf(object):
     def getX(self):
         return self.inputJson['camera']['position']['x']
     def getY(self):
