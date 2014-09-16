@@ -194,14 +194,24 @@ def main():
         c = localCVFs[i]
         name = os.path.join(outputDir, "interpolated-"+str(i)+".json")
         c.setName("interpolated-"+str(i))
-        print (str(i)+": "
-                "X: "+str(c.getX())+
-                " Y: "+str(c.getY())+
-                " Z: "+str(c.getZ())+
-                " Pitch: "+str(c.getPitch())+
-                " Yaw: "+str(c.getYaw())+
-                " Sun Altitude: "+str(c.getSunAltitude())+
-                " Sun Azimuth: "+str(c.getSunAzimuth()))
+        print (str(i)+": "+
+                ("X: %(x).2f "+
+                "Y: %(y).2f "+
+                "Z: %(z).2f "+
+                "Pitch: %(pitch).2f "+
+                "Yaw: %(yaw).2f "+
+                "SunAltitude: %(alt).2f "+
+                "SunAzimuth: %(azim).2f ") %
+                {
+                    'x': c.getX(),
+                    'y': c.getY(),
+                    'z': c.getZ(),
+                    'pitch': c.getPitch(),
+                    'yaw': c.getYaw(),
+                    'alt': c.getSunAltitude(),
+                    'azim': c.getSunAzimuth()
+                })
+
         c.saveToFile(name);
 
 
