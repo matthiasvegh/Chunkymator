@@ -1,6 +1,4 @@
-import json
 import scipy.interpolate
-
 
 class DummySpline:
     def __init__(self, values, times=None):
