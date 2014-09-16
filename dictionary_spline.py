@@ -8,7 +8,7 @@ class DummySpline:
     def __call__(self, time):
         return self.value
 
-class DictionarySpline:
+class DictionarySpline(object):
     def __init__(self, matrix, times, interpolatingFunction=
             scipy.interpolate.UnivariateSpline):
         self.matrix = matrix
