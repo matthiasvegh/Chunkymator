@@ -16,6 +16,9 @@ script:
     - coverage run get_times_test.py
     - coverage run render_all_test.py
 
+after_success:
+    - coveralls
+
 notifications:
     email:
         - matyas.vegh@gmail.com
