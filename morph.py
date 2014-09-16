@@ -162,7 +162,7 @@ def main():
 
 
     jsonList = [c.inputJson for c in cvfList]
-    jsonSpline = VectorSpline([jsonList], times)
+    jsonSpline = DictionarySpline([jsonList], times)
 
     localCVFs = []
 
