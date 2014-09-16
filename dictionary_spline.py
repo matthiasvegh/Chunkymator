@@ -27,13 +27,12 @@ class DictionarySpline:
                         self.times, parameterValues)
             elif isinstance(parameterValues[0],
                     (tuple, list)):
-                valueses = []
-                for breadth in range(len(parameterValues[0])):
-                    values = []
-                    for value in range(len(parameterValues)):
-                        values.append(parameterValues[value][breadth])
-                    valueses.append(values)
-
+                valueses = [[
+                        parameterValues[value][breadth]
+                        for value in range(len(parameterValues))
+                        ]
+                        for breadth in range(len(parameterValues[0]))
+                        ]
                 spline = DictionarySpline(valueses, self.times)
             elif isinstance(parameterValues[0],
                     (dict)):
