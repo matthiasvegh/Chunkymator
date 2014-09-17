@@ -6,7 +6,7 @@ import optparse
 from cvf import *
 from dictionary_spline import *
 
-from math import sin, cos, tan, asin, acos, atan2, sqrt, pi
+from math import sin, cos, atan2, sqrt, pi
 
 def getCameraAngles(xSpline, ySpline, zSpline, frames, fixedX=None, fixedY=None, fixedZ=None):
 
