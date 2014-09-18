@@ -35,10 +35,16 @@ class Get_Command_Test(unittest.TestCase):
 		self.assertEqual(result[2], "Chunky")
 
 	def test_fourth_and_fifth_parameter_should_be_render_and_scene(self):
-		result = get_command("foo", "", 1)
+		result = get_command("foo", "", 0)
 
 		self.assertEqual(result[3], "-render")
 		self.assertEqual(result[4], "foo")
+
+	def test_sixth_and_seventh_parameter_should_be_target_and_value(self):
+		result = get_command("", "", 5)
+
+		self.assertEqual(result[5], "-target")
+		self.assertEqual(result[6], 5)
 
 if __name__ == "__main__":
 	unittest.main()
