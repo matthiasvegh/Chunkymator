@@ -76,7 +76,7 @@ class Render_All_Main_Test(unittest.TestCase):
 		render_all.main()
 		self.assertNotEqual(render_all.run_command.called, True)
 
-	def test_one_scene_shoule_invoke_one_command(self):
+	def test_one_scene_should_invoke_one_command(self):
 		sys.argv = ["thisBinary", "-c", "foo", "scene1"]
 		render_all.run_command = mock.MagicMock(name='run_command')
 		render_all.main()
