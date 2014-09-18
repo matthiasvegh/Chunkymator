@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
+import mock
 from render_all import *
 
 class Get_Commands_Test(unittest.TestCase):
@@ -45,6 +46,13 @@ class Get_Command_Test(unittest.TestCase):
 
 		self.assertEqual(result[5], "-target")
 		self.assertEqual(result[6], 5)
+
+class Render_All_Main_Test(unittest.TestCase):
+
+	def setUp(self):
+		pass
+
+
 
 if __name__ == "__main__":
 	unittest.main()
