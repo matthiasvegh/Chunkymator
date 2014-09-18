@@ -59,5 +59,10 @@ class Render_All_Main_Test(unittest.TestCase):
 		render_all.main()
 		render_all.get_commands.assert_called_once_with([], "foo", 1)
 
+	def test_if_chunky_argument_missing__get_commands_shouldnt_be_called(self):
+		sys.argv = ["thisBinary"]
+		render_all.get_commands = mock.MagicMock(name='get_commands')
+		render_all.main()
+		self.assertNotEqual(render_all.get_commands.called, True)
 if __name__ == "__main__":
 	unittest.main()
