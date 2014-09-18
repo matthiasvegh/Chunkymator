@@ -8,6 +8,9 @@ def get_command(scene, chunkyPath, target):
 def get_commands(scenes, chunkyPath, target):
     return [get_command(scene, chunkyPath, target) for scene in scenes]
 
+def run_command(command):
+    pass
+
 def main():
 
     parser = optparse.OptionParser(
@@ -27,6 +30,8 @@ def main():
         return 1
 
     commands = get_commands(scenes, options.chunky, options.target)
+    for command in commands:
+        run_command(command)
 
 if __name__ == "__main__":
     main()

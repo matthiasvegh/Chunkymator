@@ -51,7 +51,12 @@ class Get_Command_Test(unittest.TestCase):
 class Render_All_Main_Test(unittest.TestCase):
 
 	def setUp(self):
-		pass
+		self.gc = render_all.get_commands
+		self.rc = render_all.run_command
+
+	def tearDown(self):
+		render_all.get_commands = self.gc
+		render_all.run_command = self.rc
 
 	def test_if_arguments_are_okay_get_commands_should_be_called(self):
 		sys.argv = ["thisBinary", "-c", "foo"]
@@ -64,5 +69,18 @@ class Render_All_Main_Test(unittest.TestCase):
 		render_all.get_commands = mock.MagicMock(name='get_commands')
 		render_all.main()
 		self.assertNotEqual(render_all.get_commands.called, True)
+
+	def test_zero_scenes_shoule_invoke_no_commands(self):
+		sys.argv = ["thisBinary", "-c", "foo"]
+		render_all.run_command = mock.MagicMock(name='run_command')
+		render_all.main()
+		self.assertNotEqual(render_all.run_command.called, True)
+
+	def test_one_scene_shoule_invoke_one_command(self):
+		sys.argv = ["thisBinary", "-c", "foo", "scene1"]
+		render_all.run_command = mock.MagicMock(name='run_command')
+		render_all.main()
+		self.assertEqual(len(render_all.run_command.call_args_list), 1)
+
 if __name__ == "__main__":
 	unittest.main()
