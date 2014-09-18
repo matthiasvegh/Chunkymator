@@ -26,8 +26,7 @@ def main():
         print "You must supply the path to Chunky-Launcher.jar"
         return 1
 
-    for scene in scenes:
-        print scene
+    commands = get_commands(scenes, options.chunky, options.target)
 
 if __name__ == "__main__":
     main()
