@@ -1,6 +1,6 @@
 import scipy.interpolate
 
-class DummySpline:
+class DummySpline(object):
     def __init__(self, values, times=None):
         self.value = values[0]
     def __call__(self, time):
