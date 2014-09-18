@@ -3,7 +3,7 @@ import subprocess
 import optparse
 
 def get_command(scene, chunkyPath, target):
-    return ["java", "-jar", chunkyPath, "-render", "-target", scene, "-target", target]
+    return ["java", "-jar", chunkyPath, "-render", scene, "-target", target]
 
 def get_commands(scenes, chunkyPath, target):
     return [get_command(scene, chunkyPath, target) for scene in scenes]
