@@ -82,5 +82,11 @@ class Render_All_Main_Test(unittest.TestCase):
 		render_all.main()
 		self.assertEqual(len(render_all.run_command.call_args_list), 1)
 
+	def test_two_scenes_should_invoke_two_commands(self):
+		sys.argv = ["thisBinary", "-c", "foo", "scene1", "scene2"]
+		render_all.run_command = mock.MagicMock(name='run_command')
+		render_all.main()
+		self.assertEqual(len(render_all.run_command.call_args_list), 2)
+
 if __name__ == "__main__":
 	unittest.main()
