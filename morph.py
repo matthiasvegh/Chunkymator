@@ -129,13 +129,13 @@ def main():
             filename = scenes[i]
             print "loading ",filename
 
-            c = cvf(filename)
-            cvfList.append(c)
-            print ("X: "+str(c.getX())+
-                " Y: "+str(c.getY())+
-                " Z: "+str(c.getZ())+
-                " Pitch: "+str(c.getPitch())+
-                " Yaw: "+str(c.getYaw()) )
+            scene = cvf(filename)
+            cvfList.append(scene)
+            print ("X: "+str(scene.getX())+
+                " Y: "+str(scene.getY())+
+                " Z: "+str(scene.getZ())+
+                " Pitch: "+str(scene.getPitch())+
+                " Yaw: "+str(scene.getYaw()) )
 
             i += 1
         except EnvironmentError:
