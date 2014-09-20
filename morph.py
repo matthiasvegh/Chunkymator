@@ -138,7 +138,7 @@ def main():
                 " Yaw: "+str(c.getYaw()) )
 
             i += 1
-        except EnvironmentError as err:
+        except EnvironmentError:
             print "could not get file #"+str(i+1)+" please try again!"
             return
     print "done loading "+str(num)+" files."
