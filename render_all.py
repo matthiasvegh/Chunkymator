@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 import subprocess
 import optparse
+import os
 
 def get_command(scene, chunkyPath, target):
-    return ["java", "-jar", chunkyPath, "-render", scene, "-target", target]
+    dirname = os.path.dirname(scene)
+    filename = os.path.basename(scene)
+
+    return ["java", "-jar", chunkyPath, "-render", filename, "-scene-dir", dirname, "-target", target]
 
 def get_commands(scenes, chunkyPath, target):
     return [get_command(scene, chunkyPath, target) for scene in scenes]
