@@ -27,6 +27,10 @@ def main():
     parser.add_option("-c", "--chunky-jar", dest="chunky",
             type=str, help="Location of Chunky-Launcher.jar",
             metavar="FILE")
+    parser.add_option("-n", "--dry-run", dest="dryRun",
+            default=False,
+            help="Do not actually run commands, just print them",
+            metavar="BOOL")
 
     (options, scenes) = parser.parse_args()
     if options.chunky is None:
