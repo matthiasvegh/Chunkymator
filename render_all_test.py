@@ -42,11 +42,17 @@ class Get_Command_Test(unittest.TestCase):
 		self.assertEqual(result[3], "-render")
 		self.assertEqual(result[4], "foo")
 
-	def test_sixth_and_seventh_parameter_should_be_target_and_value(self):
+	def test_sixth_and_seventh_parameter_should_be_scene_dir_and_path(self):
+		result = render_all.get_command("/foo", "", 5)
+
+		self.assertEqual(result[5], "-scene-dir")
+		self.assertEqual(result[6], "/")
+
+	def test_eigth_and_ninth_parameter_should_be_target_and_value(self):
 		result = render_all.get_command("", "", 5)
 
-		self.assertEqual(result[5], "-target")
-		self.assertEqual(result[6], 5)
+		self.assertEqual(result[7], "-target")
+		self.assertEqual(result[8], 5)
 
 class Render_All_Main_Test(unittest.TestCase):
 
