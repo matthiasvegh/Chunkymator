@@ -8,8 +8,11 @@ def get_command(scene, chunkyPath, target):
 def get_commands(scenes, chunkyPath, target):
     return [get_command(scene, chunkyPath, target) for scene in scenes]
 
-def run_command(command):
-    pass
+def run_command(command, dryRun=None):
+
+	if dryRun is not None:
+		print command
+		return
 
 def main():
 
@@ -35,7 +38,7 @@ def main():
 
     commands = get_commands(scenes, options.chunky, options.target)
     for command in commands:
-        run_command(command)
+        run_command(command, options.dryRun)
 
 if __name__ == "__main__":
     main()
