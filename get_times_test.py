@@ -4,6 +4,7 @@ import unittest
 import morph
 import copy
 
+
 class mockCVF:
 
     def __init__(self, x, y, z):
@@ -16,10 +17,13 @@ class mockCVF:
 
     def getX(self):
         return self.x
+
     def getY(self):
         return self.y
+
     def getZ(self):
         return self.z
+
 
 class GetTimes_consistency_test(unittest.TestCase):
 
@@ -30,18 +34,18 @@ class GetTimes_consistency_test(unittest.TestCase):
     def test_doubling_of_frame_rate_should_double_times(self):
 
         rate1 = 1
-        rate2 = 2*rate1
+        rate2 = 2 * rate1
 
         (times1, length1) = morph.getTimes(self.mockCvfs, rate1, 1)
         (times2, length2) = morph.getTimes(self.mockCvfs, rate2, 1)
 
         for t1, t2 in zip(times1, times2):
-            self.assertEqual(t1*2, t2)
+            self.assertEqual(t1 * 2, t2)
 
     def test_doubling_of_frame_rate_should_not_influence_total_length(self):
 
         rate1 = 1
-        rate2 = 2*rate1
+        rate2 = 2 * rate1
 
         (times1, length1) = morph.getTimes(self.mockCvfs, rate1, 1)
         (times2, length2) = morph.getTimes(self.mockCvfs, rate2, 1)
@@ -51,13 +55,13 @@ class GetTimes_consistency_test(unittest.TestCase):
     def test_doubling_speed_should_halve_times(self):
 
         speed1 = 1
-        speed2 = 2*speed1
+        speed2 = 2 * speed1
 
         (times1, length1) = morph.getTimes(self.mockCvfs, 1, speed1)
         (times2, length2) = morph.getTimes(self.mockCvfs, 1, speed2)
 
         for t1, t2 in zip(times1, times2):
-            self.assertEqual(t1, t2*2)
+            self.assertEqual(t1, t2 * 2)
 
     def test_appending_to_input_should_append_to_time(self):
 
@@ -71,7 +75,7 @@ class GetTimes_consistency_test(unittest.TestCase):
             self.assertEqual(old, new)
 
         self.assertGreater(newTimes[-1], oldTimes[-1])
-        self.assertEqual(len(oldTimes) +1, len(newTimes))
+        self.assertEqual(len(oldTimes) + 1, len(newTimes))
 
     def test_triangularity_should_hold(self):
 
@@ -86,7 +90,8 @@ class GetTimes_consistency_test(unittest.TestCase):
 
         self.assertEqual(oldLength + newLength, appendedLength)
         self.assertEqual(appendedTimes[-1] - appendedTimes[-2],
-                newTimes[-1])
+                         newTimes[-1])
+
 
 class GetTimes_length_test(unittest.TestCase):
 
@@ -104,9 +109,9 @@ class GetTimes_length_test(unittest.TestCase):
 
     def test_two_length_cvf_should_have_two_length_times(self):
         mockCvfs = [
-                mockCVF(0, 0, 0),
-                mockCVF(1, 0, 0)
-                ]
+            mockCVF(0, 0, 0),
+            mockCVF(1, 0, 0)
+        ]
 
         (times, length) = morph.getTimes(mockCvfs, 1, 1)
         self.assertEqual(len(times), 2)
@@ -114,21 +119,21 @@ class GetTimes_length_test(unittest.TestCase):
 
     def test_last_element_of_times_should_be_fixed_if_fixed_length(self):
         mockCvfs = [
-                mockCVF(0, 0, 0),
-                mockCVF(1, 0, 0),
-                mockCVF(1, 1, 0),
-                mockCVF(1, 1, 1)
-                ]
+            mockCVF(0, 0, 0),
+            mockCVF(1, 0, 0),
+            mockCVF(1, 1, 0),
+            mockCVF(1, 1, 1)
+        ]
         (times, length) = morph.getTimes(mockCvfs, 1, 1, 10)
         self.assertEqual(times[-1], 10)
 
     def test_fixed_length_times_should_only_differ_in_a_scalar(self):
         mockCvfs = [
-                mockCVF(0, 0, 0),
-                mockCVF(1, 0, 0),
-                mockCVF(1, 1, 0),
-                mockCVF(1, 1, 1)
-                ]
+            mockCVF(0, 0, 0),
+            mockCVF(1, 0, 0),
+            mockCVF(1, 1, 0),
+            mockCVF(1, 1, 1)
+        ]
         (times, length) = morph.getTimes(mockCvfs, 1, 1)
         (fixedTimes, fixedLength) = morph.getTimes(mockCvfs, 1, 1, 10)
 
@@ -138,16 +143,16 @@ class GetTimes_length_test(unittest.TestCase):
         scalar = fixedTimes[-1] / times[-1]
 
         for time, fixedTime in zip(times, fixedTimes):
-            if time*fixedTime == 0:
+            if time * fixedTime == 0:
                 continue
-            self.assertEqual(fixedTime/time, scalar)
+            self.assertEqual(fixedTime / time, scalar)
 
     def test_fixed_length_should_also_apply_to_zero_distance_points(self):
         mockCvfs = [
-                mockCVF(0, 0, 0),
-                mockCVF(0, 0, 0),
-                mockCVF(0, 0, 0)
-                ]
+            mockCVF(0, 0, 0),
+            mockCVF(0, 0, 0),
+            mockCVF(0, 0, 0)
+        ]
 
         (times, length) = morph.getTimes(mockCvfs, 1, 1, 100)
         self.assertEqual(times[0], 0)
