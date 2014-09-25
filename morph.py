@@ -95,6 +95,9 @@ def main():
                       help="Usually the number of intermediate jsons to be generated are calcualated by taking "
                       "the distance between keyframes. This can be overridden by setting this option.",
                       metavar="NUM", type=int)
+    parser.add_option("-d", "--offset", dest="filenameOffset",
+                      help="Filename numbering offset (default: %default).",
+                      metavar="NUM", default=0, type=int)
     cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
                                                    "If you specify these, the camera will always point in the direction of "
                                                    "these coordinates, if you do not specify them, the camera shall always "
@@ -194,7 +197,7 @@ def main():
 
     for i in range(len(localCVFs)):
         c = localCVFs[i]
-        name = os.path.join(outputDir, "interpolated-" + str(i) + ".json")
+        name = os.path.join(outputDir, "interpolated-" + str(i+options.filenameOffset) + ".json")
         c.setName("interpolated-" + str(i))
         print (str(i) + ": " +
                ("X: %(x).2f " +
