@@ -45,8 +45,9 @@ def main():
         return 1
 
     commands = get_commands(scenes, options.chunky, options.target)
-    for command in commands:
-        run_command(command, options.dryRun)
+    for i in range(len(commands)):
+        print ("running command %s of %s" % (i+1, len(commands)))
+        run_command(commands[i], options.dryRun)
 
 if __name__ == "__main__":
     main()
