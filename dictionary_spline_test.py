@@ -193,6 +193,9 @@ class ConstraintSplineTest(unittest.TestCase):
     def setUp(self):
         pass
 
+    def double(self, x):
+        return 2*x
+
     def test_if_no_constraint_is_added_spline_should_only_forward(self):
         times = [1, 2, 3, 4]
         c = ConstraintSpline(DummySpline, [1, 2, 3, 4], times)
@@ -208,6 +211,14 @@ class ConstraintSplineTest(unittest.TestCase):
 
         for v in values:
             self.assertTrue(isinstance(v, (int)))
+
+    def test_if_function_is_provided_function_should_be_used(self):
+        times = [1, 2, 3, 4]
+        c = ConstraintSpline(DummySpline, [1, 2, 3, 4], times, constraint=self.double)
+        values = [c(i) for i in times]
+
+        for v in values:
+            self.assertEqual(v, self.double(1))
 
 if __name__ == "__main__":
     unittest.main()
