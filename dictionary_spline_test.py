@@ -55,6 +55,7 @@ class DictionarySplineTest(unittest.TestCase):
         results = [v(i) for i in times]
 
         for i in range(4):
+            self.assertTrue(isinstance(results[i][0], tuple))
             self.assertAlmostEqual(results[i][0][0], vector[i][0])
             self.assertAlmostEqual(results[i][0][1], vector[i][1])
 
@@ -68,6 +69,7 @@ class DictionarySplineTest(unittest.TestCase):
         results = [v(i) for i in times]
 
         for i in range(4):
+            self.assertTrue(isinstance(results[i][0], tuple))
             self.assertAlmostEqual(results[i][0][0], vector1[i][0])
             self.assertAlmostEqual(results[i][0][1], vector1[i][1])
             self.assertAlmostEqual(results[i][1], vector2[i])
@@ -82,6 +84,8 @@ class DictionarySplineTest(unittest.TestCase):
         results = [v(i) for i in times]
 
         for i in range(4):
+            self.assertTrue(isinstance(results[i][0], tuple))
+            self.assertTrue(isinstance(results[i][0][0], tuple))
             self.assertAlmostEqual(results[i][0][0][0], vector[i][0][0])
             self.assertAlmostEqual(results[i][0][0][1], vector[i][0][1])
             self.assertAlmostEqual(results[i][0][1], vector[i][1])
