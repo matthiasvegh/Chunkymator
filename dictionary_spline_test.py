@@ -185,7 +185,7 @@ class DictionarySplineTest(unittest.TestCase):
 		times = [1, 2, 3, 4]
 		matrix = [vector]
 
-		self.assertRaises(Exception, DictionarySpline(matrix, times))
+		self.assertRaises(Exception, DictionarySpline, matrix, times)
 
 if __name__ == "__main__":
     unittest.main()
