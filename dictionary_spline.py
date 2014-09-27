@@ -9,6 +9,18 @@ class DummySpline(object):
     def __call__(self, time):
         return self.value
 
+class ConstraintSpline(object):
+
+    def __init__(self, splineFunction, values, times, constraint=None):
+        self.spline = splineFunction(times, values)
+        self.constraint = constraint
+
+    def __call__(self, time):
+        value = self.spline(time)
+        if self.constraint is not None:
+            return self.constraint(value)
+        return value
+
 
 class DictionarySpline(object):
 
