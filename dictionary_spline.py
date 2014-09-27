@@ -11,7 +11,7 @@ class DummySpline(object):
 
 class ConstraintSpline(object):
 
-    def __init__(self, splineFunction, values, times, constraint=None):
+    def __init__(self, splineFunction, times, values, constraint=None):
         self.spline = splineFunction(times, values)
         self.constraint = constraint
 
@@ -37,8 +37,13 @@ class DictionarySpline(object):
                         len(parameterValues)):
                     spline = DummySpline(parameterValues)
                 else:
-                    spline = self.interpolator(
-                        self.times, parameterValues)
+                    if isinstance(parameterValues[0], (int, long)):
+                        constraint = round
+                    else:
+                        constraint = None
+                    spline = ConstraintSpline(self.interpolator,
+                        self.times, parameterValues,
+                        constraint=constraint)
             elif isinstance(parameterValues[0],
                             (tuple, list)):
                 valueses = [[
@@ -47,7 +52,8 @@ class DictionarySpline(object):
                 ]
                     for breadth in range(len(parameterValues[0]))
                 ]
-                spline = DictionarySpline(valueses, self.times)
+                spline = ConstraintSpline(DictionarySpline, valueses, self.times,
+                        constraint=type(parameterValues[0]))
             elif isinstance(parameterValues[0],
                             (dict)):
                 spline = {}
