@@ -77,9 +77,6 @@ class cvf(object):
         with open(filename, 'w+') as f:
             json.dump(self.inputJson, f)
 
-    filename = ""
-    inputJson = {}
-
     def __init__(self, name):
         self.filename = name
         inputJsonString = open(name).read()
