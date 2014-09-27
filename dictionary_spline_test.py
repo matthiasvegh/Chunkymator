@@ -175,5 +175,17 @@ class DictionarySplineTest(unittest.TestCase):
 
         self.assertSequenceEqual(
             results, [vector[0] for i in range(len(vector))])
+
+	def test_differently_shaped_trees_should_cause_exception(self):
+		vector = [
+			{'x': 1, 'y': 10},
+			{'x': 1},
+			{'x': 1},
+			{'x': 1}]
+		times = [1, 2, 3, 4]
+		matrix = [vector]
+
+		self.assertRaises(Exception, DictionarySpline(matrix, times))
+
 if __name__ == "__main__":
     unittest.main()
