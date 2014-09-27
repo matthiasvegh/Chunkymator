@@ -201,5 +201,13 @@ class ConstraintSplineTest(unittest.TestCase):
         for v in values:
             self.assertEqual(v, 1)
 
+    def test_if_constraint_is_int_type_of_values_should_be_int(self):
+        times = [1, 2, 3, 4]
+        c = ConstraintSpline(DummySpline, [1.0, 2.0, 3.0, 4.0], times, constraint=int)
+        values = [c(i) for i in times]
+
+        for v in values:
+            self.assertTrue(isinstance(v, (int)))
+
 if __name__ == "__main__":
     unittest.main()
