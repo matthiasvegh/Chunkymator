@@ -22,7 +22,8 @@ def run_command(command, dryRun=False):
         print command
         return
 
-    subprocess.call(command)
+    fnull = open(os.devnull, 'w')
+    subprocess.call(command, stdout=fnull, stderr=subprocess.STDOUT)
 
 def main():
 
