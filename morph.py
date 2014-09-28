@@ -166,7 +166,7 @@ def main():
     print "total number of frames to be generated: " + str(int(r * (totalLength / v)))
 
     jsonList = [c.inputJson for c in cvfList]
-    jsonSpline = DictionarySpline([jsonList], times)
+    jsonSpline = DictionarySpline(times, [jsonList])
 
     localCVFs = []
 
