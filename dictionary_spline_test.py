@@ -35,6 +35,18 @@ class DictionarySplineTest(unittest.TestCase):
             self.assertAlmostEqual(results[i][0], vector1[i])
             self.assertAlmostEqual(results[i][1], vector2[i])
 
+    def test_values_of_float_controls_should_match(self):
+        vector = [1.0, 2.0, 3.0, 4.0]
+        times = [1, 2, 3, 4]
+
+        matrix = [vector]
+
+        v = DictionarySpline(times, matrix)
+        results = [v(i) for i in times]
+
+        for i in range(4):
+            self.assertAlmostEqual(results[i][0], vector[i])
+
     def test_strings_should_not_be_interpolated(self):
         vector = ["a", "b", "c", "d"]
         times = [1, 2, 3, 4]
