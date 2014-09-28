@@ -15,7 +15,7 @@ class DictionarySplineTest(unittest.TestCase):
 
         matrix = [vector]
 
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
         results = [v(i) for i in times]
 
         for i in range(4):
@@ -28,7 +28,7 @@ class DictionarySplineTest(unittest.TestCase):
 
         matrix = [vector1, vector2]
 
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
         results = [v(i) for i in times]
 
         for i in range(4):
@@ -39,7 +39,7 @@ class DictionarySplineTest(unittest.TestCase):
         vector = ["a", "b", "c", "d"]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i) for i in times]
 
@@ -50,7 +50,7 @@ class DictionarySplineTest(unittest.TestCase):
         vector = [(1, 10), (2, 20), (3, 30), (4, 40)]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i) for i in times]
 
@@ -64,7 +64,7 @@ class DictionarySplineTest(unittest.TestCase):
         vector2 = [100, 200, 300, 400]
         times = [1, 2, 3, 4]
         matrix = [vector1, vector2]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i) for i in times]
 
@@ -79,7 +79,7 @@ class DictionarySplineTest(unittest.TestCase):
             ((1, 10), 100), ((2, 20), 200), ((3, 30), 300), ((4, 40), 400)]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i) for i in times]
 
@@ -94,7 +94,7 @@ class DictionarySplineTest(unittest.TestCase):
         vector = [{'x': 1}, {'x': 2}, {'x': 3}, {'x': 4}]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i) for i in times]
 
@@ -109,7 +109,7 @@ class DictionarySplineTest(unittest.TestCase):
             {'x': 4, 'y': 40, 'z': 400}]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i) for i in times]
 
@@ -126,7 +126,7 @@ class DictionarySplineTest(unittest.TestCase):
             {'x': 4, 'y': 40, 'z': 400, 'd': {'a': 8}}]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i) for i in times]
 
@@ -147,7 +147,7 @@ class DictionarySplineTest(unittest.TestCase):
             {'x': 4, 'y': 40, 'z': 400, 'd': {'a': 8, 'b': -4, 'c': -40}}]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i)[0] for i in times]
 
@@ -160,7 +160,7 @@ class DictionarySplineTest(unittest.TestCase):
         vector = [1, 1, 1, 1]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times)
+        v = DictionarySpline(times, matrix)
 
         results = [v(i)[0] for i in times]
 
@@ -173,7 +173,7 @@ class DictionarySplineTest(unittest.TestCase):
         vector = [1, 2, 3, 4]
         times = [1, 2, 3, 4]
         matrix = [vector]
-        v = DictionarySpline(matrix, times, DummySpline)
+        v = DictionarySpline(times, matrix, DummySpline)
 
         results = [v(i)[0] for i in times]
 
@@ -189,45 +189,41 @@ class DictionarySplineTest(unittest.TestCase):
         times = [1, 2, 3, 4]
         matrix = [vector]
 
-        self.assertRaises(Exception, DictionarySpline, matrix, times)
+        self.assertRaises(Exception, DictionarySpline, times, matrix)
 
 
 class ConstraintSplineTest(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.times = [10, 20, 30, 40]
 
     def double(self, x):
         return 2*x
 
     def test_if_no_constraint_is_added_spline_should_only_forward(self):
-        times = [1, 2, 3, 4]
-        c = ConstraintSpline(DummySpline, times, [1, 2, 3, 4])
-        values = [c(i) for i in times]
+        c = ConstraintSpline(DummySpline, self.times, [1, 2, 3, 4])
+        values = [c(i) for i in self.times]
 
         for v in values:
             self.assertEqual(v, 1)
 
     def test_if_no_constraint_is_added_spline_should_only_forward_float(self):
-        times = [1, 2, 3, 4]
-        c = ConstraintSpline(DummySpline, times, [1.0, 2.0, 3.0, 4.0])
-        values = [c(i) for i in times]
+        c = ConstraintSpline(DummySpline, self.times, [1.0, 2.0, 3.0, 4.0])
+        values = [c(i) for i in self.times]
 
         for v in values:
             self.assertEqual(v, 1.0)
 
     def test_if_constraint_is_int_type_of_values_should_be_int(self):
-        times = [1, 2, 3, 4]
-        c = ConstraintSpline(DummySpline, times, [1.0, 2.0, 3.0, 4.0], constraint=int)
-        values = [c(i) for i in times]
+        c = ConstraintSpline(DummySpline, self.times, [1.0, 2.0, 3.0, 4.0], constraint=int)
+        values = [c(i) for i in self.times]
 
         for v in values:
             self.assertTrue(isinstance(v, (int)))
 
     def test_if_function_is_provided_function_should_be_used(self):
-        times = [1, 2, 3, 4]
-        c = ConstraintSpline(DummySpline, times, [1, 2, 3, 4], constraint=self.double)
-        values = [c(i) for i in times]
+        c = ConstraintSpline(DummySpline, self.times, [1, 2, 3, 4], constraint=self.double)
+        values = [c(i) for i in self.times]
 
         for v in values:
             self.assertEqual(v, self.double(1))

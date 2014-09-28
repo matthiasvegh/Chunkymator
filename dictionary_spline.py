@@ -3,7 +3,7 @@ import scipy.interpolate
 
 class DummySpline(object):
 
-    def __init__(self, values, times=None):
+    def __init__(self, times, values):
         self.value = values[0]
 
     def __call__(self, time):
@@ -24,7 +24,7 @@ class ConstraintSpline(object):
 
 class DictionarySpline(object):
 
-    def __init__(self, matrix, times, interpolatingFunction=scipy.interpolate.UnivariateSpline):
+    def __init__(self, times, matrix, interpolatingFunction=scipy.interpolate.UnivariateSpline):
         self.matrix = matrix
         self.times = times
         self.interpolator = interpolatingFunction
@@ -35,7 +35,7 @@ class DictionarySpline(object):
                           (int, long, float, complex)):
                 if(parameterValues.count(parameterValues[0]) ==
                         len(parameterValues)):
-                    spline = DummySpline(parameterValues)
+                    spline = DummySpline(self.times, parameterValues)
                 else:
                     if isinstance(parameterValues[0], (int, long)):
                         constraint = round
@@ -52,7 +52,7 @@ class DictionarySpline(object):
                 ]
                     for breadth in range(len(parameterValues[0]))
                 ]
-                spline = ConstraintSpline(DictionarySpline, valueses, self.times,
+                spline = ConstraintSpline(DictionarySpline, self.times, valueses,
                         constraint=type(parameterValues[0]))
             elif isinstance(parameterValues[0],
                             (dict)):
@@ -61,10 +61,10 @@ class DictionarySpline(object):
                     values = []
                     for i in range(len(parameterValues)):
                         values.append(parameterValues[i][key])
-                    spline[key] = DictionarySpline([values], self.times)
+                    spline[key] = DictionarySpline(self.times, [values])
 
             else:
-                spline = DummySpline(parameterValues)
+                spline = DummySpline(self.times, parameterValues)
             self.splines.append(spline)
 
     def __call__(self, time):
