@@ -202,7 +202,7 @@ class ConstraintSplineTest(unittest.TestCase):
 
     def test_if_no_constraint_is_added_spline_should_only_forward(self):
         times = [1, 2, 3, 4]
-        c = ConstraintSpline(DummySpline, [1, 2, 3, 4], times)
+        c = ConstraintSpline(DummySpline, times, [1, 2, 3, 4])
         values = [c(i) for i in times]
 
         for v in values:
@@ -210,7 +210,7 @@ class ConstraintSplineTest(unittest.TestCase):
 
     def test_if_no_constraint_is_added_spline_should_only_forward_float(self):
         times = [1, 2, 3, 4]
-        c = ConstraintSpline(DummySpline, [1.0, 2.0, 3.0, 4.0], times)
+        c = ConstraintSpline(DummySpline, times, [1.0, 2.0, 3.0, 4.0])
         values = [c(i) for i in times]
 
         for v in values:
@@ -218,7 +218,7 @@ class ConstraintSplineTest(unittest.TestCase):
 
     def test_if_constraint_is_int_type_of_values_should_be_int(self):
         times = [1, 2, 3, 4]
-        c = ConstraintSpline(DummySpline, [1.0, 2.0, 3.0, 4.0], times, constraint=int)
+        c = ConstraintSpline(DummySpline, times, [1.0, 2.0, 3.0, 4.0], constraint=int)
         values = [c(i) for i in times]
 
         for v in values:
@@ -226,7 +226,7 @@ class ConstraintSplineTest(unittest.TestCase):
 
     def test_if_function_is_provided_function_should_be_used(self):
         times = [1, 2, 3, 4]
-        c = ConstraintSpline(DummySpline, [1, 2, 3, 4], times, constraint=self.double)
+        c = ConstraintSpline(DummySpline, times, [1, 2, 3, 4], constraint=self.double)
         values = [c(i) for i in times]
 
         for v in values:
