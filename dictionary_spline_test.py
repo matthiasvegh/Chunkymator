@@ -208,6 +208,14 @@ class ConstraintSplineTest(unittest.TestCase):
         for v in values:
             self.assertEqual(v, 1)
 
+    def test_if_no_constraint_is_added_spline_should_only_forward_float(self):
+        times = [1, 2, 3, 4]
+        c = ConstraintSpline(DummySpline, [1.0, 2.0, 3.0, 4.0], times)
+        values = [c(i) for i in times]
+
+        for v in values:
+            self.assertEqual(v, 1.0)
+
     def test_if_constraint_is_int_type_of_values_should_be_int(self):
         times = [1, 2, 3, 4]
         c = ConstraintSpline(DummySpline, [1.0, 2.0, 3.0, 4.0], times, constraint=int)
