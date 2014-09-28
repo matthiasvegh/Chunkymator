@@ -7,20 +7,22 @@ import os
 def get_command(scene, chunkyPath, target):
     dirname = os.path.dirname(scene)
     filename = os.path.basename(scene)
+    scenename = os.path.splitext(filename)[0]
 
-    return ["java", "-jar", chunkyPath, "-render", filename, "-scene-dir", dirname, "-target", target]
+    return ["java", "-jar", chunkyPath, "-render", scenename, "-scene-dir", dirname, "-target", str(target)]
 
 
 def get_commands(scenes, chunkyPath, target):
     return [get_command(scene, chunkyPath, target) for scene in scenes]
 
 
-def run_command(command, dryRun=None):
+def run_command(command, dryRun=False):
 
-    if dryRun is not None:
+    if dryRun:
         print command
         return
 
+    subprocess.call(command)
 
 def main():
 

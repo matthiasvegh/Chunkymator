@@ -54,7 +54,7 @@ class Get_Command_Test(unittest.TestCase):
         result = render_all.get_command("", "", 5)
 
         self.assertEqual(result[7], "-target")
-        self.assertEqual(result[8], 5)
+        self.assertEqual(result[8], '5')
 
 
 class Render_All_Main_Test(unittest.TestCase):
