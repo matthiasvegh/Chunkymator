@@ -32,9 +32,7 @@ These switches specify where to point the camera while it is traveling. This is 
 
 Rendering
 =========
-Use python to iterate over all the output files and invoke chunky.
-Pseudocode:
+Use render_all.py to iterate over all the scenes and invoke chunky.
 ```
-for i in range(NumberOfFramesGenerated):
-    subprocess.call(["java", "-jar", "/path/to/ChunkyLauncher.jar", "-render", "interpolated-"+str(i), "-scene-dir /directory/specified/for/outputs/", "-target 5"])
+./render_all.py -c /path/to/Chunky-Launcher.jar -t 10 /path/to/scene1 /path/to/scene2 ...
 ```
