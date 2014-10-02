@@ -4,6 +4,18 @@ import unittest
 from dictionary_spline import *
 
 
+class JsonSchemaCheckerTest(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_empty_and_non_empty_jsons_should_not_have_same_shape(self):
+        dict1 = {}
+        dict2 = {'a':5}
+
+        self.assertTrue(jsonSchemaCheck([dict1, dict2]))
+
+
 class DictionarySplineTest(unittest.TestCase):
 
     def setUp(self):

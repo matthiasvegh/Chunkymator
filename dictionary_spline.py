@@ -1,6 +1,13 @@
 import scipy.interpolate
 
 
+def jsonSchemaCheck(jsons):
+    keyses = [set(json.keys()) for json in jsons]
+    if keyses.count(keyses[0]) == len(keyses):
+        return False
+    return True
+
+
 class DummySpline(object):
 
     def __init__(self, times, values):
