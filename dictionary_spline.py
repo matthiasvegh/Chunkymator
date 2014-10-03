@@ -3,7 +3,7 @@ import scipy.interpolate
 
 def jsonSchemaCheck(jsons):
     keyses = [set(json.keys()) for json in jsons]
-    if keyses.count(keyses[0]) == len(keyses):
+    if keyses.count(keyses[0]) != len(keyses):
         return False
     return True
 

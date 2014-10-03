@@ -13,7 +13,7 @@ class JsonSchemaCheckerTest(unittest.TestCase):
         dict1 = {}
         dict2 = {'a':5}
 
-        self.assertTrue(jsonSchemaCheck([dict1, dict2]))
+        self.assertFalse(jsonSchemaCheck([dict1, dict2]))
 
 
 class DictionarySplineTest(unittest.TestCase):
