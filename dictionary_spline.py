@@ -5,6 +5,15 @@ def jsonSchemaCheck(jsons):
     keyses = [set(json.keys()) for json in jsons]
     if keyses.count(keyses[0]) != len(keyses):
         return False
+
+    for key in jsons[0].keys():
+        valueTypes = [type(json[key]) for json in jsons]
+        if valueTypes.count(valueTypes[0]) != len(valueTypes):
+            return False
+        if isinstance(jsons[0][key], (dict)):
+            subdictionaries = [json[key] for json in jsons]
+            if not jsonSchemaCheck(subdictionaries):
+                return False
     return True
 
 

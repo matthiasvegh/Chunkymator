@@ -27,6 +27,12 @@ class JsonSchemaCheckerTest(unittest.TestCase):
 
         self.assertTrue(jsonSchemaCheck([dict1, dict2]))
 
+    def test_equal_recursive_jsons_should_have_same_shape(self):
+        dict_ = {'a': {'b':5}}
+
+        self.assertTrue(jsonSchemaCheck([dict_, dict_]))
+
+
 class DictionarySplineTest(unittest.TestCase):
 
     def setUp(self):
