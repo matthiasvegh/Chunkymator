@@ -15,6 +15,17 @@ class JsonSchemaCheckerTest(unittest.TestCase):
 
         self.assertFalse(jsonSchemaCheck([dict1, dict2]))
 
+    def test_jsons_with_different_keys_should_not_have_same_shape(self):
+        dict1 = {'a':5}
+        dict2 = {'b':5}
+
+        self.assertFalse(jsonSchemaCheck([dict1, dict2]))
+
+    def test_jsons_with_same_keys_should_have_same_shape(self):
+        dict1 = {'a':5}
+        dict2 = {'a':6}
+
+        self.assertTrue(jsonSchemaCheck([dict1, dict2]))
 
 class DictionarySplineTest(unittest.TestCase):
 
