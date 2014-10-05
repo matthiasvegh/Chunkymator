@@ -32,6 +32,17 @@ class JsonSchemaCheckerTest(unittest.TestCase):
 
         self.assertTrue(jsonSchemaCheck([dict_, dict_]))
 
+    def test_same_shape_with_different_leaves_should_have_same_Shape(self):
+        dict1 = {'a': {'b':5}}
+        dict2 = {'a': {'b':6}}
+
+        self.assertTrue(jsonSchemaCheck([dict1, dict2]))
+
+    def test_different_type_leaves_should_not_have_same_shape(self):
+        dict1 = {'a': {'b':5}}
+        dict2 = {'a': {'b':'five'}}
+
+        self.assertFalse(jsonSchemaCheck([dict1, dict2]))
 
 class DictionarySplineTest(unittest.TestCase):
 
