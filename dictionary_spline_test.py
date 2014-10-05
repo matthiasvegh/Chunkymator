@@ -32,7 +32,7 @@ class JsonSchemaCheckerTest(unittest.TestCase):
 
         self.assertTrue(jsonSchemaCheck([dict_, dict_]))
 
-    def test_same_shape_with_different_leaves_should_have_same_Shape(self):
+    def test_same_shape_with_different_leaves_should_have_same_shape(self):
         dict1 = {'a': {'b':5}}
         dict2 = {'a': {'b':6}}
 
