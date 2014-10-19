@@ -151,6 +151,11 @@ def main():
             print "could not get file #" + str(i + 1) + " please try again!"
             return
     print "done loading " + str(num) + " files."
+
+    if not jsonSchemaCheck(cvfList):
+        print "Schema of input files do not match."
+        return
+
     outputDir = options.outputdir
     if outputDir is None:
         outputDir = './outputs'
