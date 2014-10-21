@@ -98,9 +98,9 @@ def main():
     parser.add_option("-d", "--offset", dest="filenameOffset",
                       help="Filename numbering offset (default: %default).",
                       metavar="NUM", default=0, type=int)
-    parser.add_option("-c", "--use-chunky", dest=chunky,
+    parser.add_option("-c", "--use-chunky", dest="chunky",
 					  help="If specified, pass input jsons on to Chunky for a sanity check.",
-					  metavar="PATH", type=string)
+					  metavar="PATH", type=str)
     cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
                                                    "If you specify these, the camera will always point in the direction of "
                                                    "these coordinates, if you do not specify them, the camera shall always "
