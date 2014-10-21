@@ -152,7 +152,8 @@ def main():
             return
     print "done loading " + str(num) + " files."
 
-    if not jsonSchemaCheck(cvfList):
+    cvfJsons = [_c.inputJson for _c in cvfList]
+    if not jsonSchemaCheck(cvfJsons):
         print "Schema of input files do not match."
         return
 
