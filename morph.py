@@ -39,6 +39,25 @@ def getCameraAngles(xSpline, ySpline, zSpline, frames, fixedX=None, fixedY=None,
     return yawVals, pitchVals
 
 
+def overrideSunMovement(scenes):
+    sunAltitudes = [scene.getSunAltitude for scene in scenes]
+
+    isIncreasing = all(
+            sunAltitudes[i] <= sunAltitudes[i+1] for i in range(len(sunAltitudes)))
+    isDecreasing = all(
+            sunAltitudes[i] >= sunAltitudes[i+1] for i in range(len(sunAltitudes)))
+
+    if not isIncreasing and not isDecreasing:
+        return
+
+    dawn = sunAltitudes[0] if isIncreasing else sunAltitudes[-1]
+    dusk = sunAltitudes[0] if isDecreasing else sunAltitudes[-1]
+
+    num = len(scenes)
+    increment = (dusk - dawn)/num
+    for i in range(num):
+        scenes[i].setSunAltitude(dusk + i*increment)
+
 def getTimes(cvfList, r, v, fixedLength=None):
     times = [0.0]
     totalLength = 0.0
@@ -99,8 +118,8 @@ def main():
                       help="Filename numbering offset (default: %default).",
                       metavar="NUM", default=0, type=int)
     parser.add_option("-c", "--use-chunky", dest="chunky",
-					  help="If specified, pass input jsons on to Chunky for a sanity check.",
-					  metavar="PATH", type=str)
+                      help="If specified, pass input jsons on to Chunky for a sanity check.",
+                      metavar="PATH", type=str)
     cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
                                                    "If you specify these, the camera will always point in the direction of "
                                                    "these coordinates, if you do not specify them, the camera shall always "
