@@ -14,7 +14,7 @@ install:
 
 script:
     - coverage run -p -a --source=. --omit='*test*' dictionary_spline_test.py
-    - coverage run -p -a --source=. --omit='*test*' get_times_test.py
+    - coverage run -p -a --source=. --omit='*test*' morph_test.py
     - coverage run -p -a --source=. --omit='*test*' render_all_test.py
 
 after_success:
