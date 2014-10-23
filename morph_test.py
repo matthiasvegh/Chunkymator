@@ -7,13 +7,14 @@ import copy
 
 class mockCVF:
 
-    def __init__(self, x, y, z):
+    def __init__(self, x, y, z, altitude=0):
         self.x = x
         self.y = y
         self.z = z
+        self.altitude = altitude
 
     def __eq__(self, other):
-        return self.x == other.x and self.y == other.y and self.z == other.y
+        return self.x == other.x and self.y == other.y and self.z == other.y and self.altitude == other.altitude
 
     def getX(self):
         return self.x
