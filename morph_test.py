@@ -25,6 +25,12 @@ class mockCVF:
     def getZ(self):
         return self.z
 
+    def getSunAltitude(self):
+        return self.altitude
+
+    def setSunAltitude(self, alt):
+        self.altitude = alt
+
 
 class GetTimes_consistency_test(unittest.TestCase):
 
@@ -159,6 +165,18 @@ class GetTimes_length_test(unittest.TestCase):
         self.assertEqual(times[0], 0)
         self.assertEqual(times[1], 50)
         self.assertEqual(times[2], 100)
+
+
+class SunOverrideTest(unittest.TestCase):
+
+    def setUp(self):
+        self.scenes = [mockCVF(0,0,0, altitude) for altitude in range(5)]
+
+    def test_increasing_sun_should_stay_the_same(self):
+        backup = self.scenes
+        morph.overrideSunMovement(self.scenes)
+        self.assertListEqual(backup, self.scenes)
+
 
 if __name__ == "__main__":
     unittest.main()
