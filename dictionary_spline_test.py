@@ -87,6 +87,18 @@ class DictionarySplineTest(unittest.TestCase):
         for i in range(4):
             self.assertAlmostEqual(results[i][0], vector[i])
 
+    def test_integer_controls_should_remain_integers(self):
+        vector = [10, 20, 30, 40]
+        times = [1, 2, 3, 4]
+
+        matrix = [vector]
+
+        v = DictionarySpline(times, matrix)
+        results = [v(i) for i in times]
+
+        for v in results:
+            self.assertTrue(isinstance(v[0], (int)))
+
     def test_strings_should_not_be_interpolated(self):
         vector = ["a", "b", "c", "d"]
         times = [1, 2, 3, 4]
