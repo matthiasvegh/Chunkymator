@@ -54,7 +54,7 @@ class DictionarySpline(object):
                     spline = DummySpline(self.times, parameterValues)
                 else:
                     if isinstance(parameterValues[0], (int, long)):
-                        constraint = round
+                        constraint = lambda x: int(round(x))
                     else:
                         constraint = None
                     spline = ConstraintSpline(self.interpolator,
