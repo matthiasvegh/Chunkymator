@@ -38,6 +38,21 @@ def getCameraAngles(xSpline, ySpline, zSpline, frames, fixedX=None, fixedY=None,
 
     return yawVals, pitchVals
 
+def findInflection(values):
+
+    if len(values) <= 2:
+        return
+
+    isUp = lambda x, y: x <= y
+    isDown = lambda x, y: x >= y
+
+    up = isUp(values[0], values[1])
+    normal = isUp if up else isDown
+
+
+    for i in range(len(values) -1):
+        if not normal(values[i], values[i-1]):
+            return i+1
 
 def overrideSunMovement(scenes):
     sunAltitudes = [scene.getSunAltitude for scene in scenes]
