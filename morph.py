@@ -42,6 +42,9 @@ def getCameraAngles(xSpline, ySpline, zSpline, frames, fixedX=None, fixedY=None,
 def overrideSunMovement(scenes):
     sunAltitudes = [scene.getSunAltitude for scene in scenes]
 
+    if len(sunAltitudes) <= 2:
+        return
+
     isIncreasing = all(
             sunAltitudes[i] <= sunAltitudes[i+1] for i in range(len(sunAltitudes)))
     isDecreasing = all(
