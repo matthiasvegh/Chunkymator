@@ -49,9 +49,9 @@ def findInflection(values):
     up = isUp(values[0], values[1])
     normal = isUp if up else isDown
 
-
     for i in range(len(values) -1):
-        if not normal(values[i], values[i-1]):
+        if not normal(values[i], values[i+1]):
+            print up
             return i+1
 
 def overrideSunMovement(scenes):

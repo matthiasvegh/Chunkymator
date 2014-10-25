@@ -178,5 +178,37 @@ class SunOverrideTest(unittest.TestCase):
         self.assertListEqual(backup, self.scenes)
 
 
+class FindFlectionTest(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_empty_vector_should_return_none(self):
+        self.assertIsNone(morph.findInflection([]))
+
+    def test_one_element_vector_should_return_none(self):
+        self.assertIsNone(morph.findInflection([5]))
+
+    def test_two_element_vector_should_return_none(self):
+        self.assertIsNone(morph.findInflection([4, 3]))
+
+    def test_increasing_vector_should_return_none(self):
+        self.assertIsNone(morph.findInflection([1, 2, 3]))
+
+    def test_decreasing_vector_should_return_none(self):
+        self.assertIsNone(morph.findInflection([3, 2, 1]))
+
+    def test_downward_inflection_at_second_position_should_return_2(self):
+        self.assertEqual(morph.findInflection([1, 2, 1]), 2)
+
+    def test_upwward_inflection_at_second_position_should_return_2(self):
+        self.assertEqual(morph.findInflection([1, 0, 1]), 2)
+
+    def test_downward_inflection_at_third_position_should_return_3(self):
+        self.assertEqual(morph.findInflection([1, 2, 3, 0]), 3)
+
+    def test_upwward_inflection_at_third_position_should_return_3(self):
+        self.assertEqual(morph.findInflection([3, 2, 1, 4]), 3)
+
 if __name__ == "__main__":
     unittest.main()
