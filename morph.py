@@ -51,7 +51,6 @@ def findInflection(values):
 
     for i in range(len(values) -1):
         if not normal(values[i], values[i+1]):
-            print up
             return i+1
 
 def overrideSunMovement(scenes):
