@@ -55,15 +55,15 @@ def findInflection(values):
             return i+1
 
 def overrideSunMovement(scenes):
-    sunAltitudes = [scene.getSunAltitude for scene in scenes]
+    sunAltitudes = [scene.getSunAltitude() for scene in scenes]
 
     if len(sunAltitudes) <= 2:
         return
 
     isIncreasing = all(
-            sunAltitudes[i] <= sunAltitudes[i+1] for i in range(len(sunAltitudes)))
+            sunAltitudes[i] <= sunAltitudes[i+1] for i in range(len(sunAltitudes)-1))
     isDecreasing = all(
-            sunAltitudes[i] >= sunAltitudes[i+1] for i in range(len(sunAltitudes)))
+            sunAltitudes[i] >= sunAltitudes[i+1] for i in range(len(sunAltitudes)-1))
 
     if not isIncreasing and not isDecreasing:
         return

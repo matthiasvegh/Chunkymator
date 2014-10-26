@@ -3,6 +3,7 @@
 import unittest
 import morph
 import copy
+import mock
 
 
 class mockCVF:
@@ -209,6 +210,67 @@ class FindFlectionTest(unittest.TestCase):
 
     def test_upwward_inflection_at_third_position_should_return_3(self):
         self.assertEqual(morph.findInflection([3, 2, 1, 4]), 3)
+
+class SunOverrideTest(unittest.TestCase):
+
+    def setUp(self):
+        self.setSun = mockCVF.setSunAltitude
+        self.getSun = mockCVF.getSunAltitude
+        mockCVF.setSunAltitude = mock.MagicMock(name='setSunAltitude')
+
+        self.dawn = mockCVF(0, 0, 0, 0)
+        self.noon = mockCVF(0, 0, 0, 1.507)
+        self.dusk = mockCVF(0, 0, 0, 0)
+
+    def tearDown(self):
+        mockCVF.setSunAltitude = self.setSun
+
+    def test_no_scenes_should_be_overwritten_if_none_are_passed(self):
+        self.assertIsNone(morph.overrideSunMovement([]))
+
+    def test_no_scenes_should_be_overwritten_if_one_is_passed(self):
+        self.assertIsNone(morph.overrideSunMovement([self.dawn]))
+        self.assertFalse(self.dawn.setSunAltitude.called)
+
+    def test_no_scenes_should_be_overwritten_if_two_are_passed(self):
+        self.assertIsNone(morph.overrideSunMovement([self.dawn, self.dawn]))
+        self.assertFalse(self.dawn.setSunAltitude.called)
+
+    def test_middle_scene_should_be_overwritten_if_decreasing_is_passed(self):
+        morph.overrideSunMovement([self.noon, self.dusk, self.dawn])
+        mockCVF.setSunAltitude.assert_any_call(1.507/2)
+
+    def test_middle_scene_should_be_overwritten_if_increasing_is_passed(self):
+        morph.overrideSunMovement([self.dusk, self.dawn, self.noon])
+        mockCVF.setSunAltitude.assert_any_call(1.507/2)
+
+    def test_first_scene_shouldnt_be_overwritten_if_increasing_is_passed(self):
+        oldFirst = self.dusk.getSunAltitude
+
+        morph.overrideSunMovement([self.dusk, self.dusk, self.noon])
+
+        self.assertEqual(self.dusk.getSunAltitude, oldFirst)
+
+    def test_last_scene_shouldnt_be_overwritten_if_increasing_is_passed(self):
+        oldLast = self.noon.getSunAltitude
+
+        morph.overrideSunMovement([self.dusk, self.dusk, self.noon])
+
+        self.assertEqual(self.noon.getSunAltitude, oldLast)
+
+    def test_first_scene_shouldnt_be_overwritten_if_decreasing_is_passed(self):
+        oldFirst = self.noon.getSunAltitude
+
+        morph.overrideSunMovement([self.noon, self.dusk, self.dusk])
+
+        self.assertEqual(self.noon.getSunAltitude, oldFirst)
+
+    def test_last_scene_shouldnt_be_overwritten_if_decreasing_is_passed(self):
+        oldLast = self.dusk.getSunAltitude
+
+        morph.overrideSunMovement([self.noon, self.dusk, self.dusk])
+
+        self.assertEqual(self.dusk.getSunAltitude, oldLast)
 
 if __name__ == "__main__":
     unittest.main()
