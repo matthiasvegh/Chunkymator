@@ -238,8 +238,6 @@ class SunOverrideTest(unittest.TestCase):
 
     def test_middle_scene_should_be_overwritten_if_decreasing_is_passed(self):
         morph.overrideSunMovement([self.noon, self.dusk, self.dawn])
-        print mockCVF.setSunAltitude.call_args_list
-        print self.dusk.setSunAltitude.call_args_list
         mockCVF.setSunAltitude.assert_any_call(1.507/2)
 
     def test_middle_scene_should_be_overwritten_if_increasing_is_passed(self):
@@ -247,32 +245,32 @@ class SunOverrideTest(unittest.TestCase):
         mockCVF.setSunAltitude.assert_any_call(1.507/2)
 
     def test_first_scene_shouldnt_be_overwritten_if_increasing_is_passed(self):
-        oldFirst = self.dusk.getSunAltitude
+        oldFirst = self.dusk.getSunAltitude()
 
         morph.overrideSunMovement([self.dusk, self.dusk, self.noon])
 
-        self.assertEqual(self.dusk.getSunAltitude, oldFirst)
+        self.assertEqual(self.dusk.getSunAltitude(), oldFirst)
 
     def test_last_scene_shouldnt_be_overwritten_if_increasing_is_passed(self):
-        oldLast = self.noon.getSunAltitude
+        oldLast = self.noon.getSunAltitude()
 
         morph.overrideSunMovement([self.dusk, self.dusk, self.noon])
 
-        self.assertEqual(self.noon.getSunAltitude, oldLast)
+        self.assertEqual(self.noon.getSunAltitude(), oldLast)
 
     def test_first_scene_shouldnt_be_overwritten_if_decreasing_is_passed(self):
-        oldFirst = self.noon.getSunAltitude
+        oldFirst = self.noon.getSunAltitude()
 
         morph.overrideSunMovement([self.noon, self.dusk, self.dusk])
 
-        self.assertEqual(self.noon.getSunAltitude, oldFirst)
+        self.assertEqual(self.noon.getSunAltitude(), oldFirst)
 
     def test_last_scene_shouldnt_be_overwritten_if_decreasing_is_passed(self):
-        oldLast = self.dusk.getSunAltitude
+        oldLast = self.dusk.getSunAltitude()
 
         morph.overrideSunMovement([self.noon, self.dusk, self.dusk])
 
-        self.assertEqual(self.dusk.getSunAltitude, oldLast)
+        self.assertEqual(self.dusk.getSunAltitude(), oldLast)
 
 if __name__ == "__main__":
     unittest.main()

@@ -70,10 +70,11 @@ def overrideSunMovement(scenes):
     dawn = sunAltitudes[0] if isIncreasing else sunAltitudes[-1]
     dusk = sunAltitudes[0] if isDecreasing else sunAltitudes[-1]
 
-    num = len(scenes)
-    increment = (dusk - dawn)/num
-    for i in range(num):
-        scenes[i].setSunAltitude(dusk + i*increment)
+    num = len(sunAltitudes)
+    step = (dusk - dawn)/(num-1)
+
+    for i in range(1, num-1):
+        scenes[i].setSunAltitude(i*step)
 
 def getTimes(cvfList, r, v, fixedLength=None):
     times = [0.0]
