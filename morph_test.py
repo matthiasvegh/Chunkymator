@@ -238,6 +238,8 @@ class SunOverrideTest(unittest.TestCase):
 
     def test_middle_scene_should_be_overwritten_if_decreasing_is_passed(self):
         morph.overrideSunMovement([self.noon, self.dusk, self.dawn])
+        print mockCVF.setSunAltitude.call_args_list
+        print self.dusk.setSunAltitude.call_args_list
         mockCVF.setSunAltitude.assert_any_call(1.507/2)
 
     def test_middle_scene_should_be_overwritten_if_increasing_is_passed(self):
