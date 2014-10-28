@@ -217,6 +217,8 @@ class SunOverrideTest(unittest.TestCase):
         self.setSun = mockCVF.setSunAltitude
         self.getSun = mockCVF.getSunAltitude
         mockCVF.setSunAltitude = mock.MagicMock(name='setSunAltitude')
+        self.findInflection = morph.findInflection
+        morph.findInflection = mock.MagicMock(name='findInflection')
 
         self.dawn = mockCVF(0, 0, 0, 0)
         self.noon = mockCVF(0, 0, 0, 1.507)
@@ -224,6 +226,7 @@ class SunOverrideTest(unittest.TestCase):
 
     def tearDown(self):
         mockCVF.setSunAltitude = self.setSun
+        morph.findInflection = self.findInflection
 
     def test_no_scenes_should_be_overwritten_if_none_are_passed(self):
         self.assertIsNone(morph.overrideSunMovement([]))
@@ -271,6 +274,11 @@ class SunOverrideTest(unittest.TestCase):
         morph.overrideSunMovement([self.noon, self.dusk, self.dusk])
 
         self.assertEqual(self.dusk.getSunAltitude(), oldLast)
+
+    def test_overrideSunMovement_should_not_call_findInflection_for_short_inputs(self):
+        morph.overrideSunMovement([self.noon, self.dusk])
+        self.assertFalse(morph.findInflection.called)
+
 
 if __name__ == "__main__":
     unittest.main()
