@@ -241,6 +241,8 @@ def main():
         localCVFs[cvfIndex].setYaw(yawPath[cvfIndex])
         localCVFs[cvfIndex].setPitch(pitchPath[cvfIndex])
 
+    overrideSunMovement(localCVFs)
+
     for i in range(len(localCVFs)):
         c = localCVFs[i]
         name = os.path.join(outputDir, "interpolated-" + str(i+options.filenameOffset) + ".json")
