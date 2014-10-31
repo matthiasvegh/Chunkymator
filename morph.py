@@ -77,6 +77,32 @@ def getTimes(cvfList, r, v, fixedLength=None):
     return (times, totalLength)
 
 
+def saveFiles(cvfs, outputDir, filenameOffset=0):
+    for i in range(len(cvfs)):
+        c = cvfs[i]
+        name = os.path.join(outputDir, "interpolated-" + str(i+filenameOffset) + ".json")
+        c.setName("interpolated-" + str(i))
+        print (str(i) + ": " +
+               ("X: %(x).2f " +
+                "Y: %(y).2f " +
+                "Z: %(z).2f " +
+                "Pitch: %(pitch).2f " +
+                "Yaw: %(yaw).2f " +
+                "SunAltitude: %(alt).2f " +
+                "SunAzimuth: %(azim).2f ") %
+               {
+            'x': c.getX(),
+            'y': c.getY(),
+            'z': c.getZ(),
+            'pitch': c.getPitch(),
+            'yaw': c.getYaw(),
+            'alt': c.getSunAltitude(),
+            'azim': c.getSunAzimuth()
+        })
+
+        c.saveToFile(name)
+
+
 def main():
     parser = optparse.OptionParser(
         usage="%prog [options] scene1 scene2 scene3 scene4 ...",
@@ -99,8 +125,8 @@ def main():
                       help="Filename numbering offset (default: %default).",
                       metavar="NUM", default=0, type=int)
     parser.add_option("-c", "--use-chunky", dest="chunky",
-					  help="If specified, pass input jsons on to Chunky for a sanity check.",
-					  metavar="PATH", type=str)
+                                          help="If specified, pass input jsons on to Chunky for a sanity check.",
+                                          metavar="PATH", type=str)
     cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
                                                    "If you specify these, the camera will always point in the direction of "
                                                    "these coordinates, if you do not specify them, the camera shall always "
@@ -204,29 +230,7 @@ def main():
         localCVFs[cvfIndex].setYaw(yawPath[cvfIndex])
         localCVFs[cvfIndex].setPitch(pitchPath[cvfIndex])
 
-    for i in range(len(localCVFs)):
-        c = localCVFs[i]
-        name = os.path.join(outputDir, "interpolated-" + str(i+options.filenameOffset) + ".json")
-        c.setName("interpolated-" + str(i))
-        print (str(i) + ": " +
-               ("X: %(x).2f " +
-                "Y: %(y).2f " +
-                "Z: %(z).2f " +
-                "Pitch: %(pitch).2f " +
-                "Yaw: %(yaw).2f " +
-                "SunAltitude: %(alt).2f " +
-                "SunAzimuth: %(azim).2f ") %
-               {
-            'x': c.getX(),
-            'y': c.getY(),
-            'z': c.getZ(),
-            'pitch': c.getPitch(),
-            'yaw': c.getYaw(),
-            'alt': c.getSunAltitude(),
-            'azim': c.getSunAzimuth()
-        })
-
-        c.saveToFile(name)
+    saveFiles(localCVFs, outputDir, options.filenameOffset)
 
 
 if __name__ == "__main__":
