@@ -312,14 +312,15 @@ class SunOverrideTest(unittest.TestCase):
         fourth = mockCVF(0, 0, 0, 0)
         fifth = mockCVF(0, 0, 0, 0)
 
+        mockCVF.setSunAltitude = self.setSun
         morph.findInflection.return_value = 3
         morph.overrideSunMovement([first, second, third, fourth, fifth])
 
-        first.setSunAltitude.assert_any_call(0.0)
-        second.setSunAltitude.assert_any_call(0.5)
-        third.setSunAltitude.assert_any_call(1.0)
-        fourth.setSunAltitude.assert_any_call(0.5)
-        fifth.setSunAltitude.assert_any_call(0.0)
+        self.assertEqual(first.getSunAltitude(), 0.0)
+        self.assertEqual(second.getSunAltitude(), 0.5)
+        self.assertEqual(third.getSunAltitude(), 1.0)
+        self.assertEqual(fourth.getSunAltitude(), 0.5)
+        self.assertEqual(fifth.getSunAltitude(), 0.0)
 
 if __name__ == "__main__":
     unittest.main()
