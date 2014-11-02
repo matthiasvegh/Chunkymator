@@ -287,10 +287,10 @@ class SunOverrideTest(unittest.TestCase):
         morph.findInflection.return_value = 2
         morph.overrideSunMovement([first, second, third, fourth])
 
-        self.assertFalse(first.setSunAltitude.called)
-        self.assertFalse(second.setSunAltitude.called)
-        self.assertFalse(third.setSunAltitude.called)
-        self.assertFalse(fourth.setSunAltitude.called)
+        self.assertEqual(first.getSunAltitude(), 0)
+        self.assertEqual(second.getSunAltitude(), 1)
+        self.assertEqual(third.getSunAltitude(), 0.5)
+        self.assertEqual(fourth.getSunAltitude(), 0)
 
     def test_scenes_should_not_be_overwriten_if_4_valley_is_passed(self):
         first = mockCVF(0, 0, 0, 1)
@@ -300,10 +300,10 @@ class SunOverrideTest(unittest.TestCase):
         morph.findInflection.return_value = 2
         morph.overrideSunMovement([first, second, third, fourth])
 
-        self.assertFalse(first.setSunAltitude.called)
-        self.assertFalse(second.setSunAltitude.called)
-        self.assertFalse(third.setSunAltitude.called)
-        self.assertFalse(fourth.setSunAltitude.called)
+        self.assertEqual(first.getSunAltitude(), 1)
+        self.assertEqual(second.getSunAltitude(), 0)
+        self.assertEqual(third.getSunAltitude(), 0.5)
+        self.assertEqual(fourth.getSunAltitude(), 1)
 
     def test_spike_should_create_two_segments(self):
         first = mockCVF(0, 0, 0, 0)
