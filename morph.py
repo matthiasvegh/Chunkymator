@@ -141,6 +141,7 @@ def main():
     parser.add_option("-c", "--use-chunky", dest="chunky",
                       help="If specified, pass input jsons on to Chunky for a sanity check.",
                       metavar="PATH", type=str)
+    parser.add_option("-S", "--override-sun", action="store_true", dest="sunoverride", default=False)
     cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
                                                    "If you specify these, the camera will always point in the direction of "
                                                    "these coordinates, if you do not specify them, the camera shall always "
@@ -244,7 +245,8 @@ def main():
         localCVFs[cvfIndex].setYaw(yawPath[cvfIndex])
         localCVFs[cvfIndex].setPitch(pitchPath[cvfIndex])
 
-    overrideSunMovement(localCVFs)
+    if options.sunoverride:
+        overrideSunMovement(localCVFs)
 
     for i in range(len(localCVFs)):
         c = localCVFs[i]
