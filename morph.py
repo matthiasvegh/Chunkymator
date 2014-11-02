@@ -74,7 +74,7 @@ def overrideSunMovement(scenes):
     dusk = sunAltitudes[0] if isDecreasing else sunAltitudes[-1]
 
     num = len(sunAltitudes)
-    step = (dusk - dawn)/(num-1)
+    step = float(dusk - dawn)/(num-1)
 
     for i in range(1, num-1):
         scenes[i].setSunAltitude(i*step)

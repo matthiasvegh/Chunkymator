@@ -305,5 +305,21 @@ class SunOverrideTest(unittest.TestCase):
         self.assertFalse(third.setSunAltitude.called)
         self.assertFalse(fourth.setSunAltitude.called)
 
+    def test_spike_should_create_two_segments(self):
+        first = mockCVF(0, 0, 0, 0)
+        second = mockCVF(0, 0, 0, 0)
+        third = mockCVF(0, 0, 0, 1)
+        fourth = mockCVF(0, 0, 0, 0)
+        fifth = mockCVF(0, 0, 0, 0)
+
+        morph.findInflection.return_value = 3
+        morph.overrideSunMovement([first, second, third, fourth, fifth])
+
+        first.setSunAltitude.assert_any_call(0.0)
+        second.setSunAltitude.assert_any_call(0.5)
+        third.setSunAltitude.assert_any_call(1.0)
+        fourth.setSunAltitude.assert_any_call(0.5)
+        fifth.setSunAltitude.assert_any_call(0.0)
+
 if __name__ == "__main__":
     unittest.main()
