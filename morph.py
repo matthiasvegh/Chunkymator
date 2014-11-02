@@ -68,6 +68,7 @@ def overrideSunMovement(scenes):
         inflectionPoint = findInflection(sunAltitudes)
         overrideSunMovement(scenes[:inflectionPoint])
         overrideSunMovement(scenes[inflectionPoint:])
+        return
 
     dawn = sunAltitudes[0] if isIncreasing else sunAltitudes[-1]
     dusk = sunAltitudes[0] if isDecreasing else sunAltitudes[-1]

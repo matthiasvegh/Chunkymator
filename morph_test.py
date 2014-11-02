@@ -279,6 +279,31 @@ class SunOverrideTest(unittest.TestCase):
         morph.overrideSunMovement([self.noon, self.dusk])
         self.assertFalse(morph.findInflection.called)
 
+    def test_scenes_should_not_be_overwriten_if_4_mountain_is_passed(self):
+        first = mockCVF(0, 0, 0, 0)
+        second = mockCVF(0, 0, 0, 1)
+        third = mockCVF(0, 0, 0, 0.5)
+        fourth = mockCVF(0, 0, 0, 0)
+        morph.findInflection.return_value = 2
+        morph.overrideSunMovement([first, second, third, fourth])
+
+        self.assertFalse(first.setSunAltitude.called)
+        self.assertFalse(second.setSunAltitude.called)
+        self.assertFalse(third.setSunAltitude.called)
+        self.assertFalse(fourth.setSunAltitude.called)
+
+    def test_scenes_should_not_be_overwriten_if_4_valley_is_passed(self):
+        first = mockCVF(0, 0, 0, 1)
+        second = mockCVF(0, 0, 0, 0)
+        third = mockCVF(0, 0, 0, 0.5)
+        fourth = mockCVF(0, 0, 0, 1)
+        morph.findInflection.return_value = 2
+        morph.overrideSunMovement([first, second, third, fourth])
+
+        self.assertFalse(first.setSunAltitude.called)
+        self.assertFalse(second.setSunAltitude.called)
+        self.assertFalse(third.setSunAltitude.called)
+        self.assertFalse(fourth.setSunAltitude.called)
 
 if __name__ == "__main__":
     unittest.main()
