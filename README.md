@@ -30,6 +30,45 @@ Camera options
 - `-z` or `--focus-on-z`
 These switches specify where to point the camera while it is traveling. This is useful is you want to showcase a specific building. If they are left out, camera points in the direction of travel.
 
+Sun movement control
+--------------------
+- `-S` or `--override-sun` this option turns the sun movement mechanism on
+Becuase the time between keyframes is controlled by Chunkymator, the speed of the sun moving across the sky can be difficult to get right.
+
+Consider the following example:
+
+| Sun position | 0 | 1 | 2 | 3 |
+|--------------|---|---|---|---|
+|      90°     |   |   |   | x |
+|      60°     |   |   |   |   |
+|      30°     |   |   |   |   |
+|       0°     | x | x | x |   |
+
+Using the sun override switch will alter this to become:
+
+| Sun position | 0 | 1 | 2 | 3 |
+|--------------|---|---|---|---|
+|      90°     |   |   |   | x |
+|      60°     |   |   | x |   |
+|      30°     |   | x |   |   |
+|       0°     | x |   |   |   |
+
+This works as expected for monotonous sequences, but also works for non monotonous ones:
+
+| Sun position | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+|--------------|---|---|---|---|---|---|---|
+|      90°     |   |   | x |   |   | x |   |
+|      45°     |   |   |   |   |   |   |   |
+|       0°     | x | x |   | x | x |   | x |
+
+| Sun position | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+|--------------|---|---|---|---|---|---|---|
+|      90°     |   |   | x |   |   | x |   |
+|      45°     |   | x |   | x |   |   |   |
+|       0°     | x |   |   |   | x |   | x |
+
+In the latter case, monotonous sections are discovered and then linearized.
+
 Rendering
 =========
 Use render_all.py to iterate over all the scenes and invoke chunky.
