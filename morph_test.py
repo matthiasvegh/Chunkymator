@@ -322,5 +322,27 @@ class SunOverrideTest(unittest.TestCase):
         self.assertEqual(fourth.getSunAltitude(), 0.5)
         self.assertEqual(fifth.getSunAltitude(), 0.0)
 
+    def test_dual_mountain_should_be_handled_right(self):
+        first = mockCVF(0, 0, 0, 0)
+        second = mockCVF(0, 0, 0, 0)
+        third = mockCVF(0, 0, 0, 1)
+        fourth = mockCVF(0, 0, 0, 0)
+        fifth = mockCVF(0, 0, 0, 0)
+        sixth = mockCVF(0, 0, 0, 1)
+        seventh = mockCVF(0, 0, 0, 0)
+
+        mockCVF.setSunAltitude = self.setSun
+        morph.findInflection = self.findInflection
+
+        morph.overrideSunMovement([first, second, third, fourth, fifth, sixth, seventh])
+
+        self.assertEqual(first.getSunAltitude(), 0)
+        self.assertEqual(second.getSunAltitude(), 0.5)
+        self.assertEqual(third.getSunAltitude(), 1)
+        self.assertEqual(fourth.getSunAltitude(), 0.5)
+        self.assertEqual(fifth.getSunAltitude(), 0)
+        self.assertEqual(sixth.getSunAltitude(), 1)
+        self.assertEqual(seventh.getSunAltitude(), 0)
+
 if __name__ == "__main__":
     unittest.main()
