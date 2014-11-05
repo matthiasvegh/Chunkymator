@@ -38,6 +38,46 @@ def getCameraAngles(xSpline, ySpline, zSpline, frames, fixedX=None, fixedY=None,
 
     return yawVals, pitchVals
 
+def findInflection(values):
+
+    if len(values) <= 2:
+        return
+
+    isUp = lambda x, y: x <= y
+    isDown = lambda x, y: x >= y
+
+    up = isUp(values[0], values[1])
+    normal = isUp if up else isDown
+
+    for i in range(len(values) -1):
+        if not normal(values[i], values[i+1]):
+            return i+1
+
+def overrideSunMovement(scenes):
+    sunAltitudes = [scene.getSunAltitude() for scene in scenes]
+
+    if len(sunAltitudes) <= 2:
+        return
+
+    isIncreasing = all(
+            sunAltitudes[i] <= sunAltitudes[i+1] for i in range(len(sunAltitudes)-1))
+    isDecreasing = all(
+            sunAltitudes[i] >= sunAltitudes[i+1] for i in range(len(sunAltitudes)-1))
+
+    if not isIncreasing and not isDecreasing:
+        inflectionPoint = findInflection(sunAltitudes)
+        overrideSunMovement(scenes[:inflectionPoint])
+        overrideSunMovement(scenes[inflectionPoint-1:])
+        return
+
+    dawn = sunAltitudes[0] if isIncreasing else sunAltitudes[-1]
+    dusk = sunAltitudes[0] if isDecreasing else sunAltitudes[-1]
+
+    num = len(sunAltitudes)
+    step = float(dusk - dawn)/(num-1)
+
+    for i in range(1, num-1):
+        scenes[i].setSunAltitude(i*step)
 
 def getTimes(cvfList, r, v, fixedLength=None):
     times = [0.0]
@@ -125,8 +165,9 @@ def main():
                       help="Filename numbering offset (default: %default).",
                       metavar="NUM", default=0, type=int)
     parser.add_option("-c", "--use-chunky", dest="chunky",
-                                          help="If specified, pass input jsons on to Chunky for a sanity check.",
-                                          metavar="PATH", type=str)
+                      help="If specified, pass input jsons on to Chunky for a sanity check.",
+                      metavar="PATH", type=str)
+    parser.add_option("-S", "--override-sun", action="store_true", dest="sunoverride", default=False)
     cameraPointOptionsGroup = optparse.OptionGroup(parser, "Camera settings",
                                                    "If you specify these, the camera will always point in the direction of "
                                                    "these coordinates, if you do not specify them, the camera shall always "
@@ -231,7 +272,6 @@ def main():
         localCVFs[cvfIndex].setPitch(pitchPath[cvfIndex])
 
     saveFiles(localCVFs, outputDir, options.filenameOffset)
-
 
 if __name__ == "__main__":
     main()
