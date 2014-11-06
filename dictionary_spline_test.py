@@ -244,6 +244,21 @@ class DictionarySplineTest(unittest.TestCase):
         self.assertSequenceEqual(
             results, [vector[0] for i in range(len(vector))])
 
+    def test_interpolating_function_should_be_passed_recursively(self):
+        vector = [
+                {'x': {'a': 1}},
+                {'x': {'a': 2}},
+                {'x': {'a': 3}},
+                {'x': {'a': 4}}]
+        times = [1, 2, 3, 4]
+        matrix = [vector]
+        v = DictionarySpline(times, matrix, DummySpline)
+
+        results = [v(i)[0] for i in times]
+
+        self.assertSequenceEqual(
+                results, [vector[0] for i in range(len(vector))])
+
     def test_differently_shaped_trees_should_cause_exception(self):
         vector = [
             {'x': 1, 'y': 10},

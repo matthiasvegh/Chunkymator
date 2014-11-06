@@ -27,8 +27,8 @@ class DummySpline(object):
 
 class ConstraintSpline(object):
 
-    def __init__(self, splineFunction, times, values, constraint=None):
-        self.spline = splineFunction(times, values)
+    def __init__(self, splineFunction, times, values, constraint=None, **extraArgs):
+        self.spline = splineFunction(times, values, **extraArgs)
         self.constraint = constraint
 
     def __call__(self, time):
@@ -59,7 +59,7 @@ class DictionarySpline(object):
                         constraint = None
                     spline = ConstraintSpline(self.interpolator,
                         self.times, parameterValues,
-                        constraint=constraint)
+                        constraint=constraint, extraArgs=interpolatingFunction)
             elif isinstance(parameterValues[0],
                             (tuple, list)):
                 valueses = [[
