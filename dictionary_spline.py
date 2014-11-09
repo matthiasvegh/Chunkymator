@@ -1,5 +1,5 @@
 import scipy.interpolate
-
+import constraint_map
 
 def jsonSchemaCheck(jsons):
     keyses = [set(json.keys()) for json in jsons]
@@ -40,10 +40,11 @@ class ConstraintSpline(object):
 
 class DictionarySpline(object):
 
-    def __init__(self, times, matrix, interpolatingFunction=scipy.interpolate.UnivariateSpline):
+    def __init__(self, times, matrix, interpolatingFunction=scipy.interpolate.UnivariateSpline, constraintMap=None):
         self.matrix = matrix
         self.times = times
         self.interpolator = interpolatingFunction
+        self.constraintMap = constraintMap
 
         self.splines = []
         for parameterValues in self.matrix:
