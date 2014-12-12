@@ -32,8 +32,8 @@ These switches specify where to point the camera while it is traveling. This is 
 
 Sun movement control
 --------------------
-- `-S` or `--override-sun` this option turns the sun movement mechanism on
-Becuase the time between keyframes is controlled by Chunkymator, the speed of the sun moving across the sky can be difficult to get right.
+- `-S` or `--override-sun` this option turns the sun movement mechanism on,
+becuase the time between keyframes is controlled by Chunkymator, the speed of the sun moving across the sky can be difficult to get right.
 
 Consider the following example:
 
