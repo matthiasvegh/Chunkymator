@@ -71,7 +71,7 @@ In the latter case, monotonous sections are discovered and then linearized.
 
 Rendering
 =========
-Use render_all.py to iterate over all the scenes and invoke chunky.
+Use `render_all.py` to iterate over all the scenes and invoke chunky.
 ```
 ./render_all.py -c /path/to/Chunky-Launcher.jar -t 10 /path/to/scene1 /path/to/scene2 ...
 ```
