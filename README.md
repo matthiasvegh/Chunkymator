@@ -10,7 +10,7 @@ Usage
 =====
 Create a couple of scenes in chunky that are of the same map, with same resolution, chunk lists etc.
 Most attributes of the scene are interpolated, including camera position, orientation, clouds, sun, colours, intensity and so on.
-Once that's done, fire up morph.py, enter the number of scenes, and drag/drop or type the (absolute) filepaths of each scene.
+Once that's done, fire up morph.py, enter the number of scenes, and drag/drop or type the (absolute) file paths of each scene.
 If all went well, morph.py should start spewing out coordinate data for the interpolated frames,
 once that's done, it will start saving the generated .jsons as interpolated<N>.json.
 
@@ -19,7 +19,7 @@ Then use chunkys command-line render tool to render all of the files.
 Command Line Options
 =====================
 - `-o` or `--outputdir` this specifies where to place generated .jsons.
-- `-f` or `--frame-rate` set this to the framerate you intend to play the animation. (default is 25)
+- `-f` or `--frame-rate` set this to the frame rate you intend to play the animation. (default is 25)
 - `-s` or `--traveling-speed` by default, this is 5.4 m/s, which is half of what minecraft's flight speed is.
 - `-t` or `--length` in this mode, the length of the animation is not defined by the total distance to be traveled, but is set explicitly.
 
@@ -33,7 +33,7 @@ These switches specify where to point the camera while it is traveling. This is 
 Sun movement control
 --------------------
 - `-S` or `--override-sun` this option turns the sun movement mechanism on,
-becuase the time between keyframes is controlled by Chunkymator, the speed of the sun moving across the sky can be difficult to get right.
+because the time between key frames is controlled by Chunkymator, the speed of the sun moving across the sky can be difficult to get right.
 
 Consider the following example:
 
