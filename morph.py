@@ -152,7 +152,7 @@ def main():
                       help="Directory to place interpoalted scenes to.",
                       metavar="DIR")
     parser.add_option("-f", "--frame-rate", dest="frameRate",
-                      help="What frame rate you intend to play back thetae interpolated images (default: %default fps).",
+                      help="What frame rate you intend to play back the interpolated images (default: %default fps).",
                       metavar="NUM", default=25, type=float)
     parser.add_option("-s", "--traveling-speed", dest="flyingSpeed",
                       help="What speed the camera should be traveling (default: %default m/s).",
