@@ -1,3 +1,4 @@
+import numpy
 import scipy.interpolate
 
 
@@ -37,10 +38,20 @@ class ConstraintSpline(object):
             return self.constraint(value)
         return value
 
+class DefaultSpline(object):
+
+    def __init__(self, times, values):
+        self.spline = scipy.interpolate.UnivariateSpline(times, values)
+
+    def __call__(self, time):
+        value = self.spline(time)
+        if isinstance(value, (numpy.ndarray)) and value.ndim == 0:
+            return value.item()
+        return value
 
 class DictionarySpline(object):
 
-    def __init__(self, times, matrix, interpolatingFunction=scipy.interpolate.UnivariateSpline):
+    def __init__(self, times, matrix, interpolatingFunction=DefaultSpline):
         self.matrix = matrix
         self.times = times
         self.interpolator = interpolatingFunction
